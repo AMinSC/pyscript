@@ -36,6 +36,21 @@
 
 - 별도로 py-config 태그를 `.toml`파일로 관리할 수도 있습니다.
 
+```toml
+# .toml 확장자는 TOML(Tom's Obvious, Minimal Language) 형식의 설정 파일로, 사람이 읽고 쓰기 쉬운 최소한의 구성을 가진 명확한 언어입니다.
+# 설정 파일, 프로젝트 설정, 데이터 저장 등 다양한 목적으로 사용되며, JSON, YAML 등과 유사한 역할을 합니다.
+
+# This is a TOML document.
+
+title = "TOML Example"
+
+[owner]
+name = "Tom Preston-Werner"
+dob = 1979-05-27T07:32:00-08:00 # First class dates
+
+# 위에 예시에서 `title`은 문자열, `[owner]`는 테이블 속성입니다.
+```
+
 ## Step 02
 ### py-script
 `Step 01`에서 `.py`파일의 경로를 지정 했다면, 이번 스탭에서는 `py-config`를 활용하여 `index.html`에서 사용할 수 있도록 `import`하는 법을 배워보겠습니다.
