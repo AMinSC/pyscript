@@ -1,4 +1,5 @@
 # Using the fetch from py-config
+## py-config에서 가져오기 사용
 
 이 장에서는 `py-config`와 `py-script` 태그를 활용하여 다른 `.py`파일 안에 함수들을 `index.html`파일에서 `import`하여 사용하는 방법을 알아가 보도록 하겠습니다.
 
@@ -14,23 +15,31 @@
     files = ["./utils.py". "./func.py"]
 </py-config>
 ```
-`index.html`과 동일한 위치선상에 있는 `.py`파일의 경로는 위와 같이 작성할 수 있으며, 다른 경로에 있거나 <수정!! CDN 방식을 활용하여 정식 사이트의 샘플 코드, 혹은 GitHub의 raw도 이용 가능합니다.>
+`index.html`과 동일한 위치선상에 있는 `.py`파일의 경로는 위와 같이 작성하여 사용할 수 있으며, 다른 경로에 있거나 CDN 방식을 활용하여 공식 사이트의 샘플 코드, 혹은 GitHub의 gist(raw)도 이용 가능합니다
 ```html
 <!-- index.html -->
 <py-config>
+    <!-- 다른 경로 -->
     [[fetch]]
-      from = "https://pyscript.net/examples/"
-      files = ["utils.py"]
-      [[fetch]]
-      from = "https://gist.githubusercontent.com/FabioRosado/faba0b7f6ad4438b07c9ac567c73b864/raw/37603b76dc7ef7997bf36781ea0116150f727f44/"
-      files = ["todo.py"]
+    from = "../TODOApp/"
+
+    <!-- 공식 사이트 examples -->
+    [[fetch]]
+    from = "https://pyscript.net/examples/"
+    files = ["utils.py"]
+    
+    <!-- GitGub gist -->
+    [[fetch]]
+    from = "https://gist.githubusercontent.com/AMinSC/169b9f6c973690f9310528e465d10688/raw/27bb8acea57d407789b0940f8b127db9b9a837a4/"
+    files = ["todo.py"]
 </py-config>
 ```
 
 또한, Python 고유의 Package를 추가하여 사용할 수도 있습니다.
-```
+```html
+<!-- index.html -->
 <py-config>
-    package = ["./utils.py". "./func.py"]
+    package = ["matplotlib". "pandas"]
 </py-config>
 ```
 
@@ -55,6 +64,7 @@ dob = 1979-05-27T07:32:00-08:00 # First class dates
 ### py-script
 `Step 01`에서 `.py`파일의 경로를 지정 했다면, 이번 스탭에서는 `py-config`를 활용하여 `index.html`에서 사용할 수 있도록 `import`하는 법을 배워보겠습니다.
 ```html
+<!-- index.html -->
  <py-script>
     from todo import add_task, dd_task_event
 </py-script>
@@ -64,6 +74,7 @@ dob = 1979-05-27T07:32:00-08:00 # First class dates
 또 다른 방법은, py-script에 src값으로 사용하는 방법입니다.
 
 ```html
+<!-- index.html -->
 <py-script src="./todo.py"></py-script>
 ```
 
