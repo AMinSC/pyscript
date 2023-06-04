@@ -80,7 +80,7 @@ dob = 1979-05-27T07:32:00-08:00 # First class dates
     from todo import add_task, dd_task_event
 </py-script>
 ```
-- from <.py 파일 이름> import <.py파일에서 사용하고 싶은 함수 이름>
+- from `<.py 파일 이름>` import `<.py파일에서 사용하고 싶은 함수 이름>`
 
 또 다른 방법은, py-script에 src값으로 사용하는 방법입니다.
 
