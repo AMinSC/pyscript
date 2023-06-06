@@ -40,7 +40,7 @@
 ```html
 <!-- index.html -->
 <py-config>
-    package = ["matplotlib". "pandas"]
+    package = ["matplotlib", "pandas"]
 </py-config>
 ```
 
@@ -61,18 +61,27 @@ dob = 1979-05-27T07:32:00-08:00 # First class dates
 # 위에 예시에서 `title`은 문자열, `[owner]`는 테이블 속성입니다.
 ```
 
+```toml
+# config.toml
+[from]
+from = "https://pyscript.net/examples/"
+
+[fiels]
+files = ["utils.py"]
+```
+
 ```html
-    <py-config>
-        <!-- 무한 로딩 이슈.. -->
-        [[fetch]]
-        from = "."
-        file = "config.toml"
-    </py-config>
+<py-config>
+    <!-- 무한 로딩 이슈.. -->
+    [[fetch]]
+    from = "."
+    file = "config.toml"
+</py-config>
 ```
 
 
 ## Step 02
-### py-script
+### `py-script`
 `Step 01`에서 `.py`파일의 경로를 지정 했다면, 이번 스탭에서는 `py-config`를 활용하여 `index.html`에서 사용할 수 있도록 `import`하는 법을 배워보겠습니다.
 ```html
 <!-- index.html -->
