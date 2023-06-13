@@ -1,0 +1,36 @@
+<html>
+<head>
+    <!-- 공식 홈페이지 기본 예제 -->
+    <title>Ice Cream Picker</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+
+    <py-config>
+        packages = ["matplotlib", "pandas"]
+    </py-config>
+
+    <py-script>
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Data for plotting
+        t = np.arange(0.0, 2.0, 0.01)
+        s = 1 + np.sin(2 * np.pi * t)
+        plt.plot(t,s)
+
+        display(plt)
+
+        # Data for plotting
+        t = np.arange(0.0, 2.0, 0.01)
+        s = 1 + np.sin(2 * np.pi * t)
+
+        fig, ax = plt.subplots()
+        ax.plot(t, s)
+
+        display(fig) # but even display(plt) would have worked!
+    </py-script>
+</body>
+</html>

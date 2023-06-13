@@ -37,3 +37,35 @@ asyncio.ensure_future(main())
 ---
 # display(*values, target=None, append=True)
 
+## Parameters
+- `*values` - 표시할 개체를 받습니다. 문자열 객체는 있는 그대로를 출력하고, 문자열이 아닌 다양한 타입인 객체의 경우, eval()과 동일한 기능을 하려고 하지만, 그렇지 못한 경우 객체의 이름과 주소 등 추가 정보와 함께 객체 타입의 이름을 포함하는 리스트 형식으로 대괄호로 묶인 문자열을 표현합니다.
+
+|Method|Inferred MIME type|
+|:------|:-------:|
+|`__repr__`|text/plain|
+|`_repr_html_`|text/html|
+|`_repr_svg_`|image/svg+xml|
+|`_repr_png_`|image/png*|
+|`_repr_pdf_`|application/pdf|
+|`_repr_jpeg_`|image/jpeg*|
+|`_repr_json_`|application/json|
+|`_repr_javascript_`|application/javascript*|
+|`savefig`|application/javascript*|
+
+
+- `target` - 엘리먼트의 ID입니다. 대상의 기본값은 현재 py-script 태그 ID이며, 이 매개변수에 다른 ID를 지정할 수 있습니다.
+
+```py
+<py-script>
+    def display_hello():
+        # this fails because we don't have any implicit target
+        # from event handlers
+        display('hello', target="helloDiv")
+</py-script>
+<div id="helloDiv"></div>
+<button id="my-button" py-onClick="display_hello()">Click me</button>
+```
+
+
+- `append` - True이면 `<div>` 태그를 생성하고 False이면 임의의 ID를 가진 `<py-script>` 태그를 생성합니다. 
+    - 현재 `<py-script>`태그 내부에서 `display`함수를 다수 사용한 뒤, `append`의 인수값을 `False`로 2개 이상 줄 경우, 1개만 노출 됩니다.
