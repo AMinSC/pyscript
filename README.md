@@ -9,3 +9,6 @@ Learning pyscript and writing books
 - week_2
     - Using Async/Await and Asyncio
         - 2022.09.01 업데이트 기준 변동 사항
+        - 각 코루틴 별 예시 코드
+    - display(*values, target=None, append=True)
+        - 각 Parameter 설명

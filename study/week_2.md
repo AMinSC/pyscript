@@ -33,6 +33,48 @@ asyncio.ensure_future(main())
 코루틴은 두 가지 유형의 코루틴이 있습니다.
 첫 번째로는 `yield` 키워드를 사용하여 일시 중지하고 다시 시작하는 데 사용할 수 있으며, 두 번째로는 비동기 I/O를 위한 `asyncio` 라이브러리의 일부로 `async`와 `await` 키워드를 활용하여 비동기처리를 할 수 있습니다.
 
+- `yield`키워드를 활용한 샘플 코드
+    ```py
+    def producer(coroutine):
+        print('Starting producer')
+        for i in range(1, 5):
+            print(f'Producing data {i}')
+            coroutine.send(i)
+        print('Producer done')
+        coroutine.close()
+
+    def consumer():
+        print('Starting consumer')
+        while True:
+            i = (yield)  # Receive a 'i' value from the producer
+            print(f'Consuming data {i}')
+
+    c = consumer()
+    next(c)  # Start consumer coroutine
+    producer(c)
+
+    ```
+
+- asyncio 라이브러리를 활용한 예시 코드
+    ```py
+    import asyncio
+
+    async def task(name, time):
+        print(f'Task {name} will run for {time} seconds.')
+        await asyncio.sleep(time)
+        print(f'Task {name} is complete.')
+
+    async def main():
+        # Create the tasks
+        tasks = [task('A', 2), task('B', 1), task('C', 3)]
+
+        # Run the tasks
+        await asyncio.gather(*tasks)
+
+    # Run the main function
+    asyncio.run(main())
+
+    ```
 
 ---
 # display(*values, target=None, append=True)
