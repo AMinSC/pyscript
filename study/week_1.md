@@ -63,20 +63,13 @@ dob = 1979-05-27T07:32:00-08:00 # First class dates
 
 ```toml
 # config.toml
-[from]
+[[fetch]]
 from = "https://pyscript.net/examples/"
-
-[fiels]
 files = ["utils.py"]
 ```
 
 ```html
-<py-config>
-    <!-- 무한 로딩 이슈.. -->
-    [[fetch]]
-    from = "."
-    file = "config.toml"
-</py-config>
+<py-config src="./config.toml"></py-config>
 ```
 
 
