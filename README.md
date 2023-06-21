@@ -12,3 +12,9 @@ Learning pyscript and writing books
         - 각 코루틴 별 예시 코드
     - display(*values, target=None, append=True)
         - 각 Parameter 설명
+- week_3
+    - `<py-config>`
+        - py-config란?
+        - Package 사용법
+        - Local Module 사용법
+        - gist 등 그 외 사용법
