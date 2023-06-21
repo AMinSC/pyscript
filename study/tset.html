@@ -20,10 +20,14 @@
 
 
         select_num = int(input())
-        display(f'결과물 입니다 : {random_add(select_num)}')
+        answer_num = random_add(select_num)
+        display(f'1부터 10까지의 랜덤한 수를 더한 값 : {answer_num}')
 
         cal = Calculator()
-        display(cal.add(2, 4))
+        display(f'더하기 : {cal.add(2, answer_num)}')
+        display(f'빼기 : {cal.sub(answer_num, 2)}')
+        display(f'곱하기 : {cal.mul(2, answer_num)}')
+        display(f'나누기 : {cal.div(answer_num, 2)}')
     </py-script>
 </body>
 </html>
