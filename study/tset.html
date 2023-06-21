@@ -9,15 +9,21 @@
     <title></title>
 </head>
 <body>
-    <div id="b">bs</div>
-    <div id="a">a</div>
+    <py-config>
+        [[fetch]]
+        from = '.'
+        files = ["func.py"]
+    </py-config>
     <py-script>
+        from func import random_add
+        from func import Calculator
 
-        a = [1, 2, "3", [4, 5], {"장범준": "벛꽃", "벛꽃": "엔딩"}, "범준이형"]
 
-        display(a[4].get("장범준"), append=False)
-        display(a, target='b')
-        display(a)
+        select_num = int(input())
+        display(f'결과물 입니다 : {random_add(select_num)}')
+
+        cal = Calculator()
+        display(cal.add(2, 4))
     </py-script>
 </body>
 </html>
