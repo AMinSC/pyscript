@@ -128,11 +128,51 @@ def random_add(num):
 여기서 파일 이름은 확장자까지 적어줘야 합니다.
 
 
-## 2.3.4 추가 사용법과 예시 코드(gist)
+## 2.3.4 추가 사용법과 예시 코드
+### gist 사용법
 만약, 사용하고자 하는 코드가 로컬에 있는것이 아니라, GitHub gist에 있다고 가정한다면, 번거롭게 가까운 경로에 파일을 새로 생성하여 코드를 작성하고 저장하여 호출할 것입니다.
 
 하지만, 위 방법 보다는 직접 gist주소를 전달하여 호출하는 방법을 알아보겠습니다.
 
 방법은 간단 합니다.
 
-<!-- 이미지 추가하여 설명, 이전 내용 보충 -->
+먼저 사용하고자 하는 `Python`코드가 있는 `gist`페이지에 접속합니다.
+![alt text](../asset/gist1.png)
+그 다음 빨간 박스에 있는 `Raw`를 누르면 아래와 같은 상태가 됩니다.
+![alt text](../asset/gist2.png)
+그럼 빨간 박스에 해당하는 url을 복사해서 `<py-config>`의 `from`에서 경로 설정을 해주면 되는데 여기서 마지막 파일 이름은 제외시키고 파일 이름은 `files`에 적어 줍니다.
+
+```html
+<py-config>
+    [[fetch]]
+    from = "https://gist.githubusercontent.com/AMinSC/169b9f6c973690f9310528e465d10688/raw/27bb8acea57d407789b0940f8b127db9b9a837a4/"
+    files = ["todo.py"]
+</py-config>
+```
+그러고 나서 아래와 같이 사용하면 됩니다.
+```html
+<!-- index.html -->
+ <py-script>
+    from todo import add_task, dd_task_event
+</py-script>
+```
+- from `<.py 파일 이름>` import `<.py파일에서 사용하고 싶은 함수 이름>`
+
+### `<py-config>`에서 지원하는 value값
+| Value  | Type | Description |
+| ------------- | ------------- | ------------- |
+| `name`  | string  | Content Cell  |
+| `version`  | string  | Content Cell  |
+| `schema_version`  | number  | Content Cell  |
+| `fetch`  | List of Stuff to fetch  | Content Cell  |
+| `plugins`  | List of Plugins  | Content Cell  |
+| `interpreters`  | List of Interpreters  | Content Cell  |
+
+### `fetch` 구성
+| Value  | Type | Description |
+| ------------- | ------------- | ------------- |
+| `from`  | string  | Content Cell  |
+| `files`  | List of strings  | Content Cell  |
+| `to_folder`  | string  | Content Cell  |
+| `to_file`  | string  | Content Cell  |
+
