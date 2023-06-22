@@ -161,18 +161,20 @@ def random_add(num):
 ### `<py-config>`에서 지원하는 value값
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
-| `name`  | string  | Content Cell  |
-| `version`  | string  | Content Cell  |
-| `schema_version`  | number  | Content Cell  |
-| `fetch`  | List of Stuff to fetch  | Content Cell  |
-| `plugins`  | List of Plugins  | Content Cell  |
-| `interpreters`  | List of Interpreters  | Content Cell  |
+| `version`  | string  | 사용자 애플리케이션의 버전입니다. PyScript버전과는 관련이 없습니다.  |
+| `fetch`  | List of Stuff to fetch  | 로컬 Python 모듈 또는 인터넷의 리소스를 지정하여 호출할 수 있습니다.  |
+| `plugins`  | List of Plugins  | 플러그인 목록을 여기에 지정합니다.  |
+| `interpreters`  | List of Interpreters  | 오픈 소스코드를 불러올 수 있습니다.  |
+
+이 외에도 다양한 value 값들이 있습니다.
 
 ### `fetch` 구성
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
-| `from`  | string  | Content Cell  |
-| `files`  | List of strings  | Content Cell  |
-| `to_folder`  | string  | Content Cell  |
-| `to_file`  | string  | Content Cell  |
+| `from`  | string  | 가져올 리소스의 기본 URL입니다.  |
+| `files`  | List of strings  | 다운로드할 파일 목록입니다.  |
+| `to_folder`  | string  | 파일 시스템에 생성할 폴더의 이름입니다.  |
+| `to_file`  | string  | 파일 시스템에 생성할 대상의 이름입니다.  |
+
+-  `to_file`과 `files`은 함께 사용할 수 없습니다.
 

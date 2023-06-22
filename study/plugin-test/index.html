@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <title>Python Plugin</title>
+
+        <link
+            rel="stylesheet"
+            href="<https://pyscript.net/unstable/pyscript.css>"
+        />
+        <script defer src="<https://pyscript.net/latest/pyscript.js>"></script>
+    </head>
+
+    <body>
+        <!-- prettier-ignore -->
+        <py-config>
+            plugins = ["./py-pyplugin.py", "./py-jsplugin.js", "./py-jsplugin2.js"]
+        </py-config>
+        <py-pyplugin></py-pyplugin>
+        <py-jsplugin></py-jsplugin>
+        <py-pyplugin></py-pyplugin>
+        <!-- prettier-ignore -->
+        <py-script>
+            import js
+
+            one = $("py-pyplugin")
+            two = js.document.createElement("div")
+            two.innerText = "이런게 왜 작동을?"
+            one.append(two)
+
+        </py-script>
+    </body>
+</html>
