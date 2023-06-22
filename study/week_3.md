@@ -178,3 +178,76 @@ def random_add(num):
 
 -  `to_file`과 `files`은 함께 사용할 수 없습니다.
 
+- info.txt
+    ```txt
+    This is PyScript
+    ```
+
+1. 단일 파일 가져오기
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            files = ['info.txt']
+        </py-config>
+        <py-script>
+            with open('info.txt', 'r') as fp:
+                print(fp.read())
+        </py-script>
+    </body>
+    ```
+    ![alt text](../asset/fetch1.png)
+
+2. 가져온 단일 파일을 이름을 변경하여 사용
+    ```html
+    <py-config>
+        [[fetch]]
+        from = 'info.txt'
+        to_file = 'info_loaded_from_web.txt'
+    </py-config>
+    <py-script>
+        with open('info_loaded_from_web.txt', 'r') as fp:
+            print(fp.read())
+    </py-script>
+    ```
+
+3. 가져온 파일을 다른 폴더로 이동
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            files = ['info.txt']
+            to_folder = 'infofiles/loaded_info'
+        </py-config>
+        <py-script>
+            with open('infofiles/loaded_info/info.txt', 'r') as fp:
+                print(fp.read())
+        </py-script>
+    </body>
+    ```
+
+4. 가져온 파일을 이름을 변경하여 다른 폴더로 이동
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            from = 'info.txt'
+            to_folder = 'infofiles/loaded_info'
+            to_file = 'info_loaded_from_web.txt'
+        </py-config>
+        <py-script>
+            with open('infofiles/loaded_info/info_loaded_from_web.txt', 'r') as fp:
+                print(fp.read())
+        </py-script>
+    </body>
+    ```
+
+5. Single file from a folder to the current working directory
+
+6. Single file from a folder to another folder (i.e. not the current working directory)
+
+7. Multiple files preserving directory structure
+
+8. From an API endpoint which doesn’t end in a filename
+
+<!-- https://docs.pyscript.net/latest/reference/elements/py-config.html#use-cases -->

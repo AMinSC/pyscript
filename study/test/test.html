@@ -12,10 +12,11 @@
     <py-config>
         [[fetch]]
         from = 'info.txt'
+        to_folder = 'infofiles/loaded_info'
         to_file = 'info_loaded_from_web.txt'
     </py-config>
     <py-script>
-        with open('info_loaded_from_web.txt', 'r') as fp:
+        with open('infofiles/loaded_info/info_loaded_from_web.txt', 'r') as fp:
             print(fp.read())
     </py-script>
 </body>
