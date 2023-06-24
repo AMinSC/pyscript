@@ -242,12 +242,54 @@ def random_add(num):
     </body>
     ```
 
-5. Single file from a folder to the current working directory
+5. 다른 경로의 작업파일을 현재 작업경로 위치로 변경
 
-6. Single file from a folder to another folder (i.e. not the current working directory)
+6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 수 있음
 
-7. Multiple files preserving directory structure
+7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 수 있음
 
 8. From an API endpoint which doesn’t end in a filename
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            from = 'https://catfact.ninja/fact'
+            to_file = './cat_fact.json'
+        </py-config>
+        <py-script>
+            import json
+            with open("cat_fact.json", "r") as fp:
+                data = json.load(fp)
+                display(data)
+        </py-script>
+    </body>
+    ```
+    파일 이름으로 끝나지 않는 API의 경우 위처럼 사용할 수 있음
 
-<!-- https://docs.pyscript.net/latest/reference/elements/py-config.html#use-cases -->
+
+### Interpreter
+
+| Value  | Type | Description |
+| ------------- | ------------- | ------------- |
+| `src`  | string (Required)  | 인터프리터 소스에 대한 URL을 입력합니다.  |
+| `name`  | string  | 다운Name of the interpreter. This field can be any string and is to be used by the application author for their own customization purposes  |
+| `lang`  | string  | Programming language supported by the interpreter. This field can be used by the application author to provide clarification. It currently has no implications on how PyScript behaves.  |
+
+
+Example
+기본 `Interpreter`는 아래와 같이 지정할 수 있으며, 다른 버전인 `pyodide`입니다.
+
+```html
+<py-config>
+  [[interpreters]]
+  src = "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"
+  name = "pyodide-0.20.0"
+  lang = "python"
+</py-config>
+```
+
+- 현재 `PyScript`는 단일 인터프리터를 지원하지만 향후 변경될 수 있습니다.
+
+
+### Supplying extra information (or metadata)
+<!-- https://docs.pyscript.net/latest/reference/elements/py-config.html#supplying-extra-information-or-metadata -->

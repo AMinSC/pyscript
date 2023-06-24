@@ -11,13 +11,14 @@
 <body>
     <py-config>
         [[fetch]]
-        from = 'info.txt'
-        to_folder = 'infofiles/loaded_info'
-        to_file = 'info_loaded_from_web.txt'
+        from = 'https://catfact.ninja/fact'
+        to_file = './cat_fact.json'
     </py-config>
     <py-script>
-        with open('infofiles/loaded_info/info_loaded_from_web.txt', 'r') as fp:
-            print(fp.read())
+        import json
+        with open("cat_fact.json", "r") as fp:
+            data = json.load(fp)
+            display(data)
     </py-script>
 </body>
 </html>
