@@ -178,6 +178,20 @@ def random_add(num):
 
 -  `to_file`과 `files`은 함께 사용할 수 없습니다.
 
+```
+content/
+  ├─ index.html <<< File with <py-config>
+  ├─ info.txt
+  ├─ data/
+  │  ├─ sensordata.csv
+  ├─ packages/
+  │  ├─ my_package/
+  │  │  ├─ __init__.py
+  │  │  ├─ helloworld/
+  │  │  │  ├─ __init__.py
+  │  │  │  ├─ greetings.py
+```
+
 - info.txt
     ```txt
     This is PyScript
@@ -243,51 +257,51 @@ def random_add(num):
     ```
 
 5. 다른 경로의 작업파일을 현재 작업경로 위치로 변경
-```html
-<body>
-    <py-config>
-        [[fetch]]
-        from = 'data/'
-        files = ['sensordata.csv']
-    </py-config>
-    <py-script>
-        with open('./sensordata.csv', 'r') as fp:
-        print(fp.read())
-    </py-script>
-</body>
-```
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            from = 'data/'
+            files = ['sensordata.csv']
+        </py-config>
+        <py-script>
+            with open('./sensordata.csv', 'r') as fp:
+            print(fp.read())
+        </py-script>
+    </body>
+    ```
 
 6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 수 있음
-```html
-<body>
-    <py-config>
-        [[fetch]]
-        from = 'data/'
-        to_folder = './local_data'
-        files = ['sensordata.csv']
-    </py-config>
-    <py-script>
-        with open('./local_data/sensordata.csv', 'r') as fp:
-        print(fp.read())
-    </py-script>
-</body>
-```
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            from = 'data/'
+            to_folder = './local_data'
+            files = ['sensordata.csv']
+        </py-config>
+        <py-script>
+            with open('./local_data/sensordata.csv', 'r') as fp:
+            print(fp.read())
+        </py-script>
+    </body>
+    ```
 
 7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 수 있음
-```html
-<body>
-    <py-config>
-        [[fetch]]
-        from = 'packages/my_package/'
-        files = ['__init__.py', 'helloworld/greetings.py', 'helloworld/__init__.py']
-        to_folder = 'custom_pkg'
-    </py-config>
-    <py-script>
-        from custom_pkg.helloworld.greetings import say_hi
-        print(say_hi())
-    </py-script>
-</body>
-```
+    ```html
+    <body>
+        <py-config>
+            [[fetch]]
+            from = 'packages/my_package/'
+            files = ['__init__.py', 'helloworld/greetings.py', 'helloworld/__init__.py']
+            to_folder = 'custom_pkg'
+        </py-config>
+        <py-script>
+            from custom_pkg.helloworld.greetings import say_hi
+            print(say_hi())
+        </py-script>
+    </body>
+    ```
 
 8. From an API endpoint which doesn’t end in a filename
     ```html
@@ -333,4 +347,24 @@ Example
 
 
 ### Supplying extra information (or metadata)
-<!-- https://docs.pyscript.net/latest/reference/elements/py-config.html#supplying-extra-information-or-metadata -->
+추가 정보(또는 메타데이터) 제공
+
+위의 방법 외에도 사용자는 메타데이터 정보와 관련이 있거나 애플리케이션 내에서 사용 중인 추가 키와 값을 제공할 수도 있습니다.
+
+예를 들어, 아래 스니펫을 사용하는 것도 유효한 구성이 될 수 있습니다:
+
+```html
+<py-config type="toml">
+  magic = "unicorn"
+</py-config>
+```
+
+```html
+<py-config type="json">
+  {
+    "magic": "unicorn"
+  }
+</py-config>
+```
+
+이 `"magic"` 키가 `src`를 통해 제공된 구성에 있고 인라인을 통해 제공된 구성에도 있는 경우, `inline` 구성의 값이 우선적으로 적용됩니다. 즉, 재정의 프로세스는 사용자 지정 키에도 적용됩니다.
