@@ -243,10 +243,51 @@ def random_add(num):
     ```
 
 5. 다른 경로의 작업파일을 현재 작업경로 위치로 변경
+```html
+<body>
+    <py-config>
+        [[fetch]]
+        from = 'data/'
+        files = ['sensordata.csv']
+    </py-config>
+    <py-script>
+        with open('./sensordata.csv', 'r') as fp:
+        print(fp.read())
+    </py-script>
+</body>
+```
 
 6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 수 있음
+```html
+<body>
+    <py-config>
+        [[fetch]]
+        from = 'data/'
+        to_folder = './local_data'
+        files = ['sensordata.csv']
+    </py-config>
+    <py-script>
+        with open('./local_data/sensordata.csv', 'r') as fp:
+        print(fp.read())
+    </py-script>
+</body>
+```
 
 7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 수 있음
+```html
+<body>
+    <py-config>
+        [[fetch]]
+        from = 'packages/my_package/'
+        files = ['__init__.py', 'helloworld/greetings.py', 'helloworld/__init__.py']
+        to_folder = 'custom_pkg'
+    </py-config>
+    <py-script>
+        from custom_pkg.helloworld.greetings import say_hi
+        print(say_hi())
+    </py-script>
+</body>
+```
 
 8. From an API endpoint which doesn’t end in a filename
     ```html
@@ -272,8 +313,8 @@ def random_add(num):
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
 | `src`  | string (Required)  | 인터프리터 소스에 대한 URL을 입력합니다.  |
-| `name`  | string  | 다운Name of the interpreter. This field can be any string and is to be used by the application author for their own customization purposes  |
-| `lang`  | string  | Programming language supported by the interpreter. This field can be used by the application author to provide clarification. It currently has no implications on how PyScript behaves.  |
+| `name`  | string  | interpreter의 이름입니다. 개발자가 자신의 필요에 맞는 방식으로 활용할 수 있 있습니다.  |
+| `lang`  | string  | interpreter가 지원하는 프로그래밍 언어입니다. 현재 PyScript의 동작 방식에는 영향을 미치지 않습니다.  |
 
 
 Example
