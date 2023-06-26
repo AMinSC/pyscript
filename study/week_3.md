@@ -122,17 +122,26 @@ def random_add(num):
         display(f'나누기 : {cal.div(answer_num, 2)}')
     </py-script>
 </body>
+</html>
 ```
 
 `<py-config>`태그 안에는 우선 `[[fetch]]`를 통해서 `from`은 파일 경로, `files`는 파일 이름을 적어줍니다.
 여기서 파일 이름은 확장자까지 적어줘야 합니다.
 
+VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
+
+우선 `input`값을 받고,
+![alt text](../asset/sample.png)
+
+결괏값을 확인할 수 있습니다.
+![alt text](../asset/sample2.png)
+
 
 ## 2.3.4 추가 사용법과 예시 코드
 ### gist 사용법
-만약, 사용하고자 하는 코드가 로컬에 있는것이 아니라, GitHub gist에 있다고 가정한다면, 번거롭게 가까운 경로에 파일을 새로 생성하여 코드를 작성하고 저장하여 호출할 것입니다.
+만약, 사용하고자 하는 코드가 로컬에 있는것이 아니라, GitHub gist에 있다고 가정한다면, 이를 사용하기 위해선 번거롭게 가까운 경로에 파일을 새로 생성하여 코드를 작성하고 저장하여 호출할 것입니다.
 
-하지만, 위 방법 보다는 직접 gist주소를 전달하여 호출하는 방법을 알아보겠습니다.
+하지만, 위 방법은 번거로울 수 있기 때문에, 직접 gist주소를 전달하여 호출하는 방법을 알아보겠습니다.
 
 방법은 간단 합니다.
 
@@ -140,7 +149,7 @@ def random_add(num):
 ![alt text](../asset/gist1.png)
 그 다음 빨간 박스에 있는 `Raw`를 누르면 아래와 같은 상태가 됩니다.
 ![alt text](../asset/gist2.png)
-그럼 빨간 박스에 해당하는 url을 복사해서 `<py-config>`의 `from`에서 경로 설정을 해주면 되는데 여기서 마지막 파일 이름은 제외시키고 파일 이름은 `files`에 적어 줍니다.
+그럼 빨간 박스에 해당하는 url을 복사해서 `<py-config>`의 `from`에서 경로 설정을 해주면 되는데, 여기서 마지막 파일 이름은 제외시키고 파일 이름은 `files`에 적어 줍니다.
 
 ```html
 <py-config>
@@ -271,7 +280,7 @@ content/
     </body>
     ```
 
-6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 수 있음
+6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 경우
     ```html
     <body>
         <py-config>
@@ -287,7 +296,7 @@ content/
     </body>
     ```
 
-7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 수 있음
+7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 경우
     ```html
     <body>
         <py-config>
@@ -303,7 +312,7 @@ content/
     </body>
     ```
 
-8. From an API endpoint which doesn’t end in a filename
+8. 파일 이름으로 끝나지 않는 API의 경우
     ```html
     <body>
         <py-config>
@@ -319,7 +328,6 @@ content/
         </py-script>
     </body>
     ```
-    파일 이름으로 끝나지 않는 API의 경우 위처럼 사용할 수 있음
 
 
 ### Interpreter
@@ -346,25 +354,26 @@ Example
 - 현재 `PyScript`는 단일 인터프리터를 지원하지만 향후 변경될 수 있습니다.
 
 
-### Supplying extra information (or metadata)
-추가 정보(또는 메타데이터) 제공
+### 추가 정보(또는 메타데이터) 제공
 
 위의 방법 외에도 사용자는 메타데이터 정보와 관련이 있거나 애플리케이션 내에서 사용 중인 추가 키와 값을 제공할 수도 있습니다.
 
 예를 들어, 아래 스니펫을 사용하는 것도 유효한 구성이 될 수 있습니다:
 
-```html
-<py-config type="toml">
-  magic = "unicorn"
-</py-config>
-```
+- TOML 형식
+    ```html
+    <py-config type="toml">
+    magic = "unicorn"
+    </py-config>
+    ```
 
-```html
-<py-config type="json">
-  {
-    "magic": "unicorn"
-  }
-</py-config>
-```
+- JSON 형식
+    ```html
+    <py-config type="json">
+    {
+        "magic": "unicorn"
+    }
+    </py-config>
+    ```
 
 이 `"magic"` 키가 `src`를 통해 제공된 구성에 있고 인라인을 통해 제공된 구성에도 있는 경우, `inline` 구성의 값이 우선적으로 적용됩니다. 즉, 재정의 프로세스는 사용자 지정 키에도 적용됩니다.
