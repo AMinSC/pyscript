@@ -9,16 +9,24 @@
     <title>pyscript</title>
 </head>
 <body>
-    <py-config>
-        [[fetch]]
-        from = 'https://catfact.ninja/fact'
-        to_file = './cat_fact.json'
+    <py-config type="json" src="./custom.json">
+        {
+            "fetch": [{
+                "files": ["./config.json"]
+            }]
+        }
     </py-config>
     <py-script>
         import json
-        with open("cat_fact.json", "r") as fp:
-            data = json.load(fp)
-            display(data)
+
+        # 설정 파일을 읽습니다.
+        with open('config.json', 'r') as file:
+            config = json.load(file)
+
+        # 설정 정보를 사용합니다.
+        magic_value = config.get('magic')
+        print(f'Magic value is: {magic_value}')
+
     </py-script>
 </body>
 </html>
