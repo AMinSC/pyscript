@@ -174,7 +174,7 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 | `version`  | string  | 사용자 애플리케이션의 버전입니다. PyScript버전과는 관련이 없습니다.  |
 | `fetch`  | List of Stuff to fetch  | 로컬 Python 모듈 또는 인터넷의 리소스를 지정하여 호출할 수 있습니다.  |
 | `plugins`  | List of Plugins  | 플러그인 목록을 여기에 지정합니다.  |
-| `interpreters`  | List of Interpreters  | 오픈 소스코드를 불러올 수 있습니다.  |
+| `packages`  | List of packages  | 오픈 소스코드를 불러올 수 있습니다.  |
 
 이 외에도 다양한 value 값들이 있습니다.
 
