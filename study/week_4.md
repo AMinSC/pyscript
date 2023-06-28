@@ -11,7 +11,7 @@ matplotlib, seaborn 으로 시각화, 심화로 pandas로 data까지 진행..
 - 가능하면 seaborn 혹은 pandas
 
 우선 plugin 관련 "AttributeError: 'NoneType' object has no attribute 'appendChild'" 에러 알아보기
-plugin을 사용하지 않을 경우, "plt.show()"가 None으로 나옴.. 위 에러와 비슷한 상황으로 판단됨
+plugin을 사용하지 않을 경우, ~~"plt.show()"가 None으로 나옴.. 위 에러와 비슷한 상황으로 판단됨~~ 해결 plt.show() -> display(plt)
 
 ## 3.4.2 pandas
 

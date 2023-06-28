@@ -10,47 +10,50 @@
 </head>
 <body>
     <py-config>
-        packages = [
-            "folium",
-            "pandas"
-        ]
+        packages = ["matplotlib", "numpy"]
         plugins = [
-            "https://pyscript.net/latest/plugins/python/py_tutor.py"
-        ]
+                    "https://pyscript.net/latest/plugins/python/py_tutor.py"
+                    ]
     </py-config>
 
     <py-script>
-        import folium
-        import json
-        import pandas as pd
+        import matplotlib.pyplot as plt
+        import matplotlib.tri as tri
+        import numpy as np
 
-        from pyodide.http import open_url
+        # First create the x and y coordinates of the points.
+        n_angles = 36
+        n_radii = 8
+        min_radius = 0.25
+        radii = np.linspace(min_radius, 0.95, n_radii)
 
-        url = (
-            "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data"
-        )
-        state_geo = f"{url}/us-states.json"
-        state_unemployment = f"{url}/US_Unemployment_Oct2012.csv"
-        state_data = pd.read_csv(open_url(state_unemployment))
-        geo_json = json.loads(open_url(state_geo).read())
+        angles = np.linspace(0, 2 * np.pi, n_angles, endpoint=False)
+        angles = np.repeat(angles[..., np.newaxis], n_radii, axis=1)
+        angles[:, 1::2] += np.pi / n_angles
 
-        m = folium.Map(location=[48, -102], zoom_start=3)
+        x = (radii * np.cos(angles)).flatten()
+        y = (radii * np.sin(angles)).flatten()
+        z = (np.cos(radii) * np.cos(3 * angles)).flatten()
 
-        folium.Choropleth(
-            geo_data=geo_json,
-            name="choropleth",
-            data=state_data,
-            columns=["State", "Unemployment"],
-            key_on="feature.id",
-            fill_color="YlGn",
-            fill_opacity=0.7,
-            line_opacity=0.2,
-            legend_name="Unemployment Rate (%)",
-        ).add_to(m)
+        # Create the Triangulation; no triangles so Delaunay triangulation created.
+        triang = tri.Triangulation(x, y)
 
-        folium.LayerControl().add_to(m)
+        # Mask off unwanted triangles.
+        triang.set_mask(np.hypot(x[triang.triangles].mean(axis=1),
+                                y[triang.triangles].mean(axis=1)) < min_radius)
 
-        display(m, target="folium")
-    </py-script>
+        fig1, ax1 = plt.subplots()
+        ax1.set_aspect('equal')
+        tpc = ax1.tripcolor(triang, z, shading='flat')
+        fig1.colorbar(tpc)
+        ax1.set_title('tripcolor of Delaunay triangulation, flat shading')
+
+        display(fig1, target="mpl")
+    </py-pscript>
+    <py-repl>
+        
+    </py-repl>
+
+    <div id="graph-area"></div>
 </body>
 </html>
