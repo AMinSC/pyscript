@@ -164,33 +164,76 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 
 ## 3.4.2 pandas
 
+1. Chart visualization
+
+
+2. Table Visualization
 ```html
 <body>
     <py-config>
-        packages = ["pandas"]
+        packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
     </py-config>
 
     <script type="py">
         import pandas as pd
+        import numpy as np
+        import matplotlib as mpl
         
-        data = pd.DataFrame(
-            {
-                'A': [1, 2, 3],
-                'B': [4, 5, 6],
-                'C': [7, 8, 9],
-                'D': [10, 11, 12]},
-            )
 
+        df = pd.DataFrame({
+            "strings": ["Adam", "Mike"],
+            "ints": [1, 3],
+            "floats": [1.123, 1000.23]
+        })
+        data = df.style \
+        .format(precision=3, thousands=".", decimal=",") \
+        .format_index(str.upper, axis=1) \
+        .relabel_index(["row 1", "row 2"], axis=0)
 
         display(data, target="out")
     </script>
 
     <div id="out"></div>
-    <py-repl></py-repl>
+    <py-repl auto-generate="true"> </py-repl>
 </body>
 ```
 
+- jinja2란
+
 ![dataframe](../asset/dataframe.png)
+
+
+```python
+weather_df = pd.DataFrame(np.random.rand(10,2)*5,
+                          index=pd.date_range(start="2021-01-01", periods=10),
+                          columns=["Tokyo", "Beijing"])
+
+def rain_condition(v):
+    if v < 1.75:
+        return "Dry"
+    elif v < 2.75:
+        return "Rain"
+    return "Heavy Rain"
+
+def make_pretty(styler):
+    styler.set_caption("Weather Conditions")
+    styler.format(rain_condition)
+    styler.format_index(lambda v: v.strftime("%A"))
+    styler.background_gradient(axis=None, vmin=1, vmax=5, cmap="YlGnBu")
+    return styler
+
+weather_df
+```
+
+![dataframe](../asset/dataframe2.png)
+
+
+```python
+weather_df.loc["2021-01-04":"2021-01-08"].style.pipe(make_pretty)
+```
+
+![dataframe](../asset/dataframe3.png)
+
 
 - `<py-repl>`태그를 활용하여 시각화 해주기
 - https://pandas.pydata.org/docs/user_guide/style.html#Formatting-the-Display
