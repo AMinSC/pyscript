@@ -165,6 +165,33 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 ## 3.4.2 pandas
 
 1. Chart visualization
+```html
+<body>
+    <py-config>
+        packages = ["pandas", "matplotlib"]
+    </py-config>
+
+    <script type="py">
+        import matplotlib.pyplot as plt
+        import pandas as pd
+        import numpy as np
+        
+        plt.close("all")
+
+        ts = pd.Series(np.random.randn(1000), index=pd.date_range("1/1/2000", periods=1000))
+
+        ts = ts.cumsum()
+        ts = ts.plot()
+
+        display(plt, target="out")
+    </script>
+
+    <div id="out"></div>
+    <py-repl auto-generate="true"> </py-repl>
+</body>
+```
+
+![dataframe](../asset/dataframe0.png)
 
 
 2. Table Visualization
@@ -198,7 +225,8 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 </body>
 ```
 
-- jinja2란
+- Jinja2란?
+    Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
 
 ![dataframe](../asset/dataframe.png)
 

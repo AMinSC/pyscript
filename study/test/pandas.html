@@ -10,25 +10,25 @@
 </head>
 <body>
     <py-config>
-        packages = ["pandas"]
+        packages = ["pandas", "matplotlib"]
     </py-config>
 
     <script type="py">
+        import matplotlib.pyplot as plt
         import pandas as pd
+        import numpy as np
         
-        data = pd.DataFrame(
-            {
-                'A': [1, 2, 3],
-                'B': [4, 5, 6],
-                'C': [7, 8, 9],
-                'D': [10, 11, 12]},
-            )
+        plt.close("all")
 
+        ts = pd.Series(np.random.randn(1000), index=pd.date_range("1/1/2000", periods=1000))
 
-        display(data, target="out")
+        ts = ts.cumsum()
+        ts = ts.plot()
+
+        display(plt, target="out")
     </script>
 
     <div id="out"></div>
-    <py-repl></py-repl>
+    <py-repl auto-generate="true"> </py-repl>
 </body>
 </html>
