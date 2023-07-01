@@ -172,18 +172,17 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
     </py-config>
 
     <script type="py">
-        import matplotlib.pyplot as plt
         import pandas as pd
-        import numpy as np
-        
-        plt.close("all")
+        import matplotlib.pyplot as plt
 
-        ts = pd.Series(np.random.randn(1000), index=pd.date_range("1/1/2000", periods=1000))
+        # Creating a DataFrame
+        data = {'Year': [2016, 2017, 2018, 2019, 2020],
+                'Sales': [200, 300, 250, 320, 400],
+                'Costs': [150, 200, 180, 220, 250]}
 
-        ts = ts.cumsum()
-        ts = ts.plot()
+        # df = pd.DataFrame(data)
 
-        display(plt, target="out")
+        display(data, target="out")
     </script>
 
     <div id="out"></div>
@@ -191,7 +190,47 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 </body>
 ```
 
-![dataframe](../asset/dataframe0.png)
+![dataframe](../asset/pandas01.png)
+
+
+```python
+df = pd.DataFrame(data)
+display(df)
+```
+
+![dataframe](../asset/pandas02.png)
+
+
+```python
+# Plotting the data
+plt.figure(figsize=(10, 5))
+
+# Plotting Sales data
+plt.plot(df['Year'], df['Sales'], label='Sales', color='blue', marker='o')
+
+# Plotting Costs data
+plt.plot(df['Year'], df['Costs'], label='Costs', color='red', marker='o')
+
+# Adding labels and title
+plt.xlabel('Year')
+plt.ylabel('Amount in USD')
+plt.title('Yearly Sales and Costs')
+plt.legend()
+
+display(plt)
+```
+
+![dataframe](../asset/pandas03.png)
+
+- 먼저 필요한 라이브러리인 pandas 및 matplotlib.pyplot을 가져옵니다.
+
+- key가 column name이고 value가 data 목록인 Dict를 사용하여 DataFrame을 만들었습니다.
+
+- matplotlib.pyplot을 사용하여 'Year' col 위에 'Sales' 및 'Costs' col의 선 도표를 만들었습니다.
+
+- label, title, legend(범례)를 추가하여 플롯을 보다 유익하게 만들었습니다.
+
+- 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `pyscript`에서는 display(ply)로 표시했습니다.
 
 
 2. Table Visualization

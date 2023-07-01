@@ -14,18 +14,17 @@
     </py-config>
 
     <script type="py">
-        import matplotlib.pyplot as plt
         import pandas as pd
-        import numpy as np
-        
-        plt.close("all")
+        import matplotlib.pyplot as plt
 
-        ts = pd.Series(np.random.randn(1000), index=pd.date_range("1/1/2000", periods=1000))
+        # Creating a DataFrame
+        data = {'Year': [2016, 2017, 2018, 2019, 2020],
+                'Sales': [200, 300, 250, 320, 400],
+                'Costs': [150, 200, 180, 220, 250]}
 
-        ts = ts.cumsum()
-        ts = ts.plot()
+        # df = pd.DataFrame(data)
 
-        display(plt, target="out")
+        display(data, target="out")
     </script>
 
     <div id="out"></div>
