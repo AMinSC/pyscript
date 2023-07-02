@@ -304,73 +304,138 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
 
 
 ### Table Visualization
-```html
-<body>
-    <py-config>
-        packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
-    </py-config>
+이번에는 DataFrame의 데이터를 보기 좋게 시각화 하는법입니다.
 
-    <script type="py">
-        import pandas as pd
-        import numpy as np
-        import matplotlib as mpl
-        
-        df = pd.DataFrame({
-            "strings": ["Adam", "Mike"],
-            "ints": [1, 3],
-            "floats": [1.123, 1000.23]
-        })
-        data = df.style \
-        .format(precision=3, thousands=".", decimal=",") \
-        .format_index(str.upper, axis=1) \
-        .relabel_index(["row 1", "row 2"], axis=0)
-        display(data, target="out")
-    </script>
+1. 기존 DataFrame
+    ```html
+    <body>
+        <py-config>
+            packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
+        </py-config>
 
-    <div id="out"></div>
-    <py-repl auto-generate="true"> </py-repl>
-</body>
-```
+        <script type="py">
+            import pandas as pd
+            import numpy as np
+            import matplotlib as mpl
+            
+            df = pd.DataFrame({
+                "strings": ["Adam", "Mike"],
+                "ints": [1, 3],
+                "floats": [1.123, 1000.23]
+            })
+            data = df.style \
+            .format(precision=3, thousands=".", decimal=",") \
+            .format_index(str.upper, axis=1) \
+            .relabel_index(["row 1", "row 2"], axis=0)
+            display(data, target="out")
+        </script>
 
-- Jinja2란?
-    Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
+        <div id="out"></div>
+        <py-repl auto-generate="true"> </py-repl>
+    </body>
+    ```
 
-![dataframe](../asset/dataframe.png)
+    - Jinja2란?
+        Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
 
-
-```python
-weather_df = pd.DataFrame(np.random.rand(10,2)*5,
-                          index=pd.date_range(start="2021-01-01", periods=10),
-                          columns=["Tokyo", "Beijing"])
-
-def rain_condition(v):
-    if v < 1.75:
-        return "Dry"
-    elif v < 2.75:
-        return "Rain"
-    return "Heavy Rain"
-
-def make_pretty(styler):
-    styler.set_caption("Weather Conditions")
-    styler.format(rain_condition)
-    styler.format_index(lambda v: v.strftime("%A"))
-    styler.background_gradient(axis=None, vmin=1, vmax=5, cmap="YlGnBu")
-    return styler
-
-weather_df
-```
-
-![dataframe](../asset/dataframe2.png)
+    ![dataframe](../asset/dataframe.png)
 
 
-```python
-weather_df.loc["2021-01-04":"2021-01-08"].style.pipe(make_pretty)
-```
+2. style 메서드로 시각화를 곁들인 DataFrame
+    ```python
+    weather_df = pd.DataFrame(np.random.rand(10,2)*5,
+                            index=pd.date_range(start="2021-01-01", periods=10),
+                            columns=["Tokyo", "Beijing"])
 
-![dataframe](../asset/dataframe3.png)
+    def rain_condition(v):
+        if v < 1.75:
+            return "Dry"
+        elif v < 2.75:
+            return "Rain"
+        return "Heavy Rain"
+
+    def make_pretty(styler):
+        styler.set_caption("Weather Conditions")
+        styler.format(rain_condition)
+        styler.format_index(lambda v: v.strftime("%A"))
+        styler.background_gradient(axis=None, vmin=1, vmax=5, cmap="YlGnBu")
+        return styler
+
+    weather_df
+    ```
+
+    ![dataframe](../asset/dataframe2.png)
+
+
+    ```python
+    weather_df.loc["2021-01-04":"2021-01-08"].style.pipe(make_pretty)
+    ```
+
+    ![dataframe](../asset/dataframe3.png)
 
 
 ## 3.4.3 sklearn (보류) or 데이터를 읽어와서 사용
 
+```html
+<body>
+    <py-config>
+        packages = ["pandas", "numpy", "matplotlib", "scikit-learn"]
+    </py-config>
+    <py-repl auto-generate="true"> </py-repl>
+</body>
+```
+
+```python
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler, KBinsDiscretizer
+from sklearn.compose import ColumnTransformer
+
+X, y = load_iris(as_frame=True, return_X_y=True)
+sepal_cols = ["sepal length (cm)", "sepal width (cm)"]
+petal_cols = ["petal length (cm)", "petal width (cm)"]
+
+preprocessor = ColumnTransformer(
+    [
+        ("scaler", StandardScaler(), sepal_cols),
+        ("kbin", KBinsDiscretizer(encode="ordinal"), petal_cols),
+    ],
+    verbose_feature_names_out=False,
+).set_output(transform="pandas")
+
+X_out = preprocessor.fit_transform(X)
+X_out.sample(n=5, random_state=0)
+```
+
+```python
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import HistGradientBoostingRegressor
+
+X, y = load_diabetes(return_X_y=True, as_frame=True)
+
+hist_no_interact = HistGradientBoostingRegressor(
+    interaction_cst=[[i] for i in range(X.shape[1])], random_state=0
+)
+hist_no_interact.fit(X, y)
+```
+
+```python
+import matplotlib.pyplot as plt
+from sklearn.metrics import PredictionErrorDisplay
+
+fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
+_ = PredictionErrorDisplay.from_estimator(
+    hist_no_interact, X, y, kind="actual_vs_predicted", ax=axs[0]
+)
+_ = PredictionErrorDisplay.from_estimator(
+    hist_no_interact, X, y, kind="residual_vs_predicted", ax=axs[1]
+)
+```
+
+
+![dataframe](../asset/sklearn.png)
+
+
+
 - repl 옵션 확인하기
-- https://scikit-learn.org/stable/auto_examples/ensemble/plot_stack_predictors.html#measure-and-plot-the-results
+- https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn-datasets-load-iris
