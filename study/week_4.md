@@ -64,7 +64,7 @@ plt
 
 이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
 
-시각화에 관심이 있다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
+matplotlib 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
 https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-tutorials-introductory-quick-start-py
 
 ### Lines, bars and markers(선, 막대 및 마커)
@@ -224,11 +224,15 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
 `https://matplotlib.org/stable/gallery/index.html`
 
 ## 3.4.2 pandas
-
-데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리는 pandas가 있습니다. 
+데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리인 pandas가 있습니다. 
 보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
 
-1. 시각화에 앞서 사용할 임의의 데이터를 Dict형으로 만들어 줍니다.
+
+### 간단한 예
+pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab으로 합니다.
+우리는 pyscript의 `<py-config>`태그를 활용하겠습니다.
+
+1. 활용하기에 앞서 기본 Dict형 데이터 틀과 함께 html파일을 아래와 같이 작성한 뒤에 Go Live하여 진행하겠습니다.
     ```html
     <body>
         <py-config>
@@ -299,10 +303,71 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
 - 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `py-repl`에서는 plt로 표시했습니다.
 
 
-2. 
+### Table Visualization
+```html
+<body>
+    <py-config>
+        packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
+    </py-config>
+
+    <script type="py">
+        import pandas as pd
+        import numpy as np
+        import matplotlib as mpl
+        
+        df = pd.DataFrame({
+            "strings": ["Adam", "Mike"],
+            "ints": [1, 3],
+            "floats": [1.123, 1000.23]
+        })
+        data = df.style \
+        .format(precision=3, thousands=".", decimal=",") \
+        .format_index(str.upper, axis=1) \
+        .relabel_index(["row 1", "row 2"], axis=0)
+        display(data, target="out")
+    </script>
+
+    <div id="out"></div>
+    <py-repl auto-generate="true"> </py-repl>
+</body>
+```
 
 - Jinja2란?
     Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
+
+![dataframe](../asset/dataframe.png)
+
+
+```python
+weather_df = pd.DataFrame(np.random.rand(10,2)*5,
+                          index=pd.date_range(start="2021-01-01", periods=10),
+                          columns=["Tokyo", "Beijing"])
+
+def rain_condition(v):
+    if v < 1.75:
+        return "Dry"
+    elif v < 2.75:
+        return "Rain"
+    return "Heavy Rain"
+
+def make_pretty(styler):
+    styler.set_caption("Weather Conditions")
+    styler.format(rain_condition)
+    styler.format_index(lambda v: v.strftime("%A"))
+    styler.background_gradient(axis=None, vmin=1, vmax=5, cmap="YlGnBu")
+    return styler
+
+weather_df
+```
+
+![dataframe](../asset/dataframe2.png)
+
+
+```python
+weather_df.loc["2021-01-04":"2021-01-08"].style.pipe(make_pretty)
+```
+
+![dataframe](../asset/dataframe3.png)
 
 
 ## 3.4.3 sklearn (보류) or 데이터를 읽어와서 사용
