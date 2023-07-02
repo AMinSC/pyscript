@@ -7,30 +7,9 @@
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
-
     <py-config>
-        packages = ["matplotlib", "pandas"]
+        packages = ["matplotlib", "numpy"]
     </py-config>
-
-    <py-script>
-        import matplotlib.pyplot as plt
-        import numpy as np
-
-        # Data for plotting
-        t = np.arange(0.0, 2.0, 0.01)
-        s = 1 + np.sin(2 * np.pi * t)
-        plt.plot(t,s)
-
-        display(plt)
-
-        # Data for plotting
-        t = np.arange(0.0, 2.0, 0.01)
-        s = 1 + np.sin(2 * np.pi * t)
-
-        fig, ax = plt.subplots()
-        ax.plot(t, s)
-
-        display(fig) # but even display(plt) would have worked!
-    </py-script>
+    <py-repl auto-generate="true"> </py-repl>
 </body>
 </html>

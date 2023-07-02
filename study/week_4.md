@@ -5,6 +5,68 @@
 Python에서 시각화 라이브러리로 matplotlib이 있습니다.
 matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습니다.
 
+### 간단한 예
+우선 라이브러리를 모두 불러오겠습니다.
+```html
+<py-config>
+    package = ["matplotlib", "numpy"]
+</py-config>
+```
+
+그 다음 시각화를 하기에 앞서 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법 2가지를 알아보겠습니다.
+
+우선, `<py-config>`태그에 직접 작성하는 방법입니다.
+```html
+<script type="py">
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    
+    fig, ax = plt.subplots()  # Create a figure containing a single axes.
+    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
+
+    display(plt, target="out")
+</script>
+<div id="out"></div>
+```
+여기서 display함수의 target파라미터값으로 원하는 태그값의 id를 설정해주면 해당 태그의 자식노드에 div태그가 생성되고 div태그의 자식노드에서 img태그를 통해 화면에 표시가 되며, 파라미터를 작성하지 않을경우 py-script태그의 자식노드에 동일하게 생성되어 화면에서 확인할 수 있습니다. 
+
+![bar graph](../asset/display.png)
+
+
+이번엔 `<py-repl>`태그를 활용해보겠습니다.
+```html
+<body>
+    <py-config>
+        packages = ["matplotlib", "numpy"]
+    </py-config>
+    <py-repl auto-generate="true"> </py-repl>
+</body>
+```
+
+이제 아래의 코드를 작성하고 실행해봅니다.
+```python
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+fig, ax = plt.subplots()  # Create a figure containing a single axes.
+ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
+
+plt
+```
+
+![bar graph](../asset/matplotlib.png)
+
+
+
+이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
+
+시각화에 관심이 있다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
+https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-tutorials-introductory-quick-start-py
+
 ### Lines, bars and markers(선, 막대 및 마커)
 1. Bar Color
     ```html
@@ -145,14 +207,13 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 
 2. Illustrate Gouraud shading.
 
-    ```html
-    <!-- 생략 -->
+    ```python
     fig2, ax2 = plt.subplots()
     ax2.set_aspect('equal')
     tpc = ax2.tripcolor(triang, z, shading='gouraud')
     fig2.colorbar(tpc)
     ax2.set_title('tripcolor of Delaunay triangulation, gouraud shading')
-    <!-- 생략 -->
+    plt
     ```
 
     ![Triangulation](../asset/Gouraud-shading.png)
@@ -235,7 +296,7 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 
 - label, title, legend(범례)를 추가하여 플롯을 보다 유익하게 만들었습니다.
 
-- 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `pyscript`에서는 display(ply)로 표시했습니다.
+- 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `py-repl`에서는 plt로 표시했습니다.
 
 
 2. 
