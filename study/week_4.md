@@ -20,7 +20,7 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 
             fruits = ['apple', 'blueberry', 'cherry', 'orange']
             counts = [40, 100, 30, 55]
-            bar_labels = ['red', 'blue', '_red', 'orange']
+            bar_labels = ['red', 'blue', 'red', 'orange']
             bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
 
             ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
@@ -164,79 +164,85 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 
 ## 3.4.2 pandas
 
-1. Chart visualization
+데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리는 pandas가 있습니다. 
+보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
+
+1. 시각화에 앞서 사용할 임의의 데이터를 Dict형으로 만들어 줍니다.
+    ```html
+    <body>
+        <py-config>
+            packages = ["pandas", "matplotlib"]
+        </py-config>
+
+        <script type="py">
+            import pandas as pd
+            import matplotlib.pyplot as plt
+
+            # Creating a DataFrame
+            data = {'Year': [2016, 2017, 2018, 2019, 2020],
+                    'Sales': [200, 300, 250, 320, 400],
+                    'Costs': [150, 200, 180, 220, 250]}
+
+            # df = pd.DataFrame(data)
+
+            display(data, target="out")
+        </script>
+
+        <div id="out"></div>
+        <py-repl auto-generate="true"> </py-repl>
+    </body>
+    ```
+
+    ![dataframe](../asset/pandas01.png)
 
 
-2. Table Visualization
-```html
-<body>
-    <py-config>
-        packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
-    </py-config>
+2. Dict형 데이터를 pandas를 활용하여 DataFrame으로 변환해줍니다.
+    ```python
+    df = pd.DataFrame(data)
+    df
+    ```
 
-    <script type="py">
-        import pandas as pd
-        import numpy as np
-        import matplotlib as mpl
-        
-
-        df = pd.DataFrame({
-            "strings": ["Adam", "Mike"],
-            "ints": [1, 3],
-            "floats": [1.123, 1000.23]
-        })
-        data = df.style \
-        .format(precision=3, thousands=".", decimal=",") \
-        .format_index(str.upper, axis=1) \
-        .relabel_index(["row 1", "row 2"], axis=0)
-
-        display(data, target="out")
-    </script>
-
-    <div id="out"></div>
-    <py-repl auto-generate="true"> </py-repl>
-</body>
-```
-
-- jinja2란
-
-![dataframe](../asset/dataframe.png)
+    ![dataframe](../asset/pandas02.png)
 
 
-```python
-weather_df = pd.DataFrame(np.random.rand(10,2)*5,
-                          index=pd.date_range(start="2021-01-01", periods=10),
-                          columns=["Tokyo", "Beijing"])
+3. 위에서 시각화 해주기 위해 사용하였던 라이브러리인 matplotlib을 사용하여 DataFrame형 데이터를 시각화 합니다.
+    ```python
+    # Plotting the data
+    plt.figure(figsize=(10, 5))
 
-def rain_condition(v):
-    if v < 1.75:
-        return "Dry"
-    elif v < 2.75:
-        return "Rain"
-    return "Heavy Rain"
+    # Plotting Sales data
+    plt.plot(df['Year'], df['Sales'], label='Sales', color='blue', marker='o')
 
-def make_pretty(styler):
-    styler.set_caption("Weather Conditions")
-    styler.format(rain_condition)
-    styler.format_index(lambda v: v.strftime("%A"))
-    styler.background_gradient(axis=None, vmin=1, vmax=5, cmap="YlGnBu")
-    return styler
+    # Plotting Costs data
+    plt.plot(df['Year'], df['Costs'], label='Costs', color='red', marker='o')
 
-weather_df
-```
+    # Adding labels and title
+    plt.xlabel('Year')
+    plt.ylabel('Amount in USD')
+    plt.title('Yearly Sales and Costs')
+    plt.legend()
 
-![dataframe](../asset/dataframe2.png)
+    plt
+    ```
+
+    ![dataframe](../asset/pandas03.png)
+
+- 먼저 필요한 라이브러리인 pandas 및 matplotlib.pyplot을 가져옵니다.
+
+- key가 column name이고 value가 data 목록인 Dict를 사용하여 DataFrame을 만들었습니다.
+
+- matplotlib.pyplot을 사용하여 'Year' col 위에 'Sales' 및 'Costs' col의 선 도표를 만들었습니다.
+
+- label, title, legend(범례)를 추가하여 플롯을 보다 유익하게 만들었습니다.
+
+- 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `pyscript`에서는 display(ply)로 표시했습니다.
 
 
-```python
-weather_df.loc["2021-01-04":"2021-01-08"].style.pipe(make_pretty)
-```
+2. 
 
-![dataframe](../asset/dataframe3.png)
+- Jinja2란?
+    Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
 
-
-- `<py-repl>`태그를 활용하여 시각화 해주기
-- https://pandas.pydata.org/docs/user_guide/style.html#Formatting-the-Display
 
 ## 3.4.3 sklearn (보류) or 데이터를 읽어와서 사용
 
