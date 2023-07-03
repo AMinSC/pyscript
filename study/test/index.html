@@ -15,19 +15,14 @@
         files = ["func.py"]
     </py-config>
     <py-script>
-        from func import random_add
-        from func import Calculator
+        # from pyscript import Pyscript
 
-
-        select_num = int(input())
-        answer_num = random_add(select_num)
-        display(f'1부터 10까지의 랜덤한 수를 더한 값 : {answer_num}')
-
-        cal = Calculator()
-        display(f'더하기 : {cal.add(2, answer_num)}')
-        display(f'빼기 : {cal.sub(answer_num, 2)}')
-        display(f'곱하기 : {cal.mul(2, answer_num)}')
-        display(f'나누기 : {cal.div(answer_num, 2)}')
+        my_div = pyscript.create('div', 'my-div', 'container')
+        print(my_div.id)  # 출력: my-div
+        print(my_div)
+        print(f'pyscript의 create 값 : {dir(my_div)}\n\n')
+        print(f'pyscript의 값 : {dir(pyscript)}')
+        
     </py-script>
 </body>
 </html>

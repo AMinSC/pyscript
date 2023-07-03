@@ -374,63 +374,80 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ![dataframe](../asset/dataframe3.png)
 
 
-## 3.4.3 sklearn (보류) or 데이터를 읽어와서 사용
+## 3.4.3 scikit-learn (보류) or 데이터를 읽어와서 사용
+scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러리입니다.
+오픈소스로써 누구나 사용할 수 있고, 해당 라이브러리에는 머신러닝용 데이터와 각종 알고리즘을 제공하고 있습니다.
 
-```html
-<body>
-    <py-config>
-        packages = ["pandas", "numpy", "matplotlib", "scikit-learn"]
-    </py-config>
-    <py-repl auto-generate="true"> </py-repl>
-</body>
-```
+우리는 scikit-learn을 PyScript에서 활용해보겠습니다.
 
-```python
-import numpy as np
-from sklearn.datasets import load_iris
-from sklearn.preprocessing import StandardScaler, KBinsDiscretizer
-from sklearn.compose import ColumnTransformer
+1. `<py-config>`태그에 필요한 Python 라이브러리를 설정하고, 위에서 언급했던 것처럼 `<py-repl>`태그를 활용하겠습니다.
+    ```html
+    <body>
+        <py-config>
+            packages = ["pandas", "numpy", "matplotlib", "scikit-learn"]
+        </py-config>
+        <py-repl auto-generate="true"> </py-repl>
+    </body>
+    ```
 
-X, y = load_iris(as_frame=True, return_X_y=True)
-sepal_cols = ["sepal length (cm)", "sepal width (cm)"]
-petal_cols = ["petal length (cm)", "petal width (cm)"]
 
-preprocessor = ColumnTransformer(
-    [
-        ("scaler", StandardScaler(), sepal_cols),
-        ("kbin", KBinsDiscretizer(encode="ordinal"), petal_cols),
-    ],
-    verbose_feature_names_out=False,
-).set_output(transform="pandas")
+2. sklearn 라이브러리로 붗꽃(iris) 데이터를 받아와서 그중에 5개의 raw값을 확인하겠습니다.
+    ```python
+    import numpy as np
+    from sklearn.datasets import load_iris
+    from sklearn.preprocessing import StandardScaler, KBinsDiscretizer
+    from sklearn.compose import ColumnTransformer
 
-X_out = preprocessor.fit_transform(X)
-X_out.sample(n=5, random_state=0)
-```
+    X, y = load_iris(as_frame=True, return_X_y=True)
+    sepal_cols = ["sepal length (cm)", "sepal width (cm)"]
+    petal_cols = ["petal length (cm)", "petal width (cm)"]
 
-```python
-from sklearn.datasets import load_diabetes
-from sklearn.ensemble import HistGradientBoostingRegressor
+    preprocessor = ColumnTransformer(
+        [
+            ("scaler", StandardScaler(), sepal_cols),
+            ("kbin", KBinsDiscretizer(encode="ordinal"), petal_cols),
+        ],
+        verbose_feature_names_out=False,
+    ).set_output(transform="pandas")
 
-X, y = load_diabetes(return_X_y=True, as_frame=True)
+    X_out = preprocessor.fit_transform(X)
+    X_out.sample(n=5, random_state=0)
+    ```
 
-hist_no_interact = HistGradientBoostingRegressor(
-    interaction_cst=[[i] for i in range(X.shape[1])], random_state=0
-)
-hist_no_interact.fit(X, y)
-```
+    ![dataframe](../asset/sklearn-ml.png)
 
-```python
-import matplotlib.pyplot as plt
-from sklearn.metrics import PredictionErrorDisplay
 
-fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
-_ = PredictionErrorDisplay.from_estimator(
-    hist_no_interact, X, y, kind="actual_vs_predicted", ax=axs[0]
-)
-_ = PredictionErrorDisplay.from_estimator(
-    hist_no_interact, X, y, kind="residual_vs_predicted", ax=axs[1]
-)
-```
+3. 머신러닝 알고리즘으로 학습
+    ```python
+    from sklearn.datasets import load_diabetes
+    from sklearn.ensemble import HistGradientBoostingRegressor
+
+    X, y = load_diabetes(return_X_y=True, as_frame=True)
+
+    hist_no_interact = HistGradientBoostingRegressor(
+        interaction_cst=[[i] for i in range(X.shape[1])], random_state=0
+    )
+    hist_no_interact.fit(X, y)
+    ```
+
+    ![dataframe](../asset/sklearn-ml2.png)
+
+
+4. 예측된 오류값을 시각화 합니다.
+    ```python
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import PredictionErrorDisplay
+
+    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
+    _ = PredictionErrorDisplay.from_estimator(
+        hist_no_interact, X, y, kind="actual_vs_predicted", ax=axs[0]
+    )
+    _ = PredictionErrorDisplay.from_estimator(
+        hist_no_interact, X, y, kind="residual_vs_predicted", ax=axs[1]
+    )
+    ```
+
+    ![dataframe](../asset/sklearn-ml3.png)
 
 
 ![dataframe](../asset/sklearn.png)
