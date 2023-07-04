@@ -19,7 +19,7 @@ Learning pyscript and writing books
         - Local Module 사용법
         - gist 등 그 외 사용법
 - week_4
-    - [`시각화 (데이터 분석) + py-repl로 데이터 처리가능`]()
+    - [`시각화 (데이터 분석) + py-repl로 데이터 처리가능`](https://github.com/AMinSC/pyscript/blob/main/study/week_4.md)
         - matplotlib
         - pandas
         - sklearn (보류) or 데이터를 읽어와서 사용
