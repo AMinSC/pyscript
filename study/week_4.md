@@ -227,6 +227,93 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
 데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리인 pandas가 있습니다. 
 보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
 
+### json, csv 파일을 불러서 DataFrame을 만들어보는 간단한 예시
+파일을 만들기 전에 `data`라는 폴더를 만들고 `data`폴더 안에 `json`파일과 `csv`파일을 만들어 보겠습니다.
+- data1.json
+    ```json
+    [
+        {"id": 1, "name": "Alice", "age": 30, "city": "New York"},
+        {"id": 2, "name": "Bob", "age": 22, "city": "Los Angeles"},
+        {"id": 3, "name": "Charlie", "age": 35, "city": "Chicago"}
+    ]
+
+    ```
+
+- data2.json
+    ```json
+    [
+        {"id": 4, "name": "David", "age": 29, "city": "Miami"},
+        {"id": 5, "name": "Eve", "age": 40, "city": "Dallas"},
+        {"id": 6, "name": "Frank", "age": 33, "city": "Boston"}
+    ]
+
+    ```
+
+- data1.csv
+    ```csv
+    id,name,age,city
+    1,Alice,30,New York
+    2,Bob,22,Los Angeles
+    3,Charlie,35,Chicago
+
+    ```
+
+- data2.csv
+    ```csv
+    id,name,age,city
+    4,David,29,Miami
+    5,Eve,40,Dallas
+    6,Frank,33,Boston
+
+    ```
+
+
+1. `<py-config>`태그로 패키지를 불러올 때, 만들어준 폴더에서 파일들을 불러오기 위해 경로와 파일설정을 같이 해줍니다.
+    ```html
+    <body>
+        <py-config>
+            packages = ["pandas", "matplotlib"]
+            [[fetch]]
+            from = './data/'
+            files = ["data1.json", "data2.json", "data1.csv", "data2.csv"]
+        </py-config>
+        <py-repl auto-generate="true"> </py-repl>
+    </body>
+    ```
+
+
+2. `<py-repl>`태그로 `<py-config>`로 경로를 지정해준 `data`폴더의 데이터들을 불러서 확인 해보겠습니다.
+    ```python
+    import pandas as pd
+
+
+    data1_json = pd.read_json('data1.json')
+    data2_json = pd.read_json('data2.json')
+
+    data1_csv = pd.read_csv('data1.csv')
+    data2_csv = pd.read_csv('data2.csv')
+    ```
+
+
+3. CSVode에서 Go Live를 누르면 아래와 같은 창을 확인하실수 있습니다.
+    ![dataframe](../asset/pandas_load.png)
+
+
+4. html파일에서 `<py-script>`태그로 불러온 json, csv파일을 확장자끼리 concat메서드로 DataFrame으로 만들어 줍니다.
+    ![dataframe](../asset/pandas_load2.png)
+
+
+5. DataFrame 변수로 확인해봅니다.
+    ![dataframe](../asset/pandas_load4.png)
+
+
+6. 특정 로우값을 확인해보면 index가 중복되어 값도 중복으로 나오는것을 확인할 수 있습니다.
+![dataframe](../asset/pandas_load5.png)
+
+
+7. reset_index 메서드를 활용하여 index값을 초기화해준 뒤, 값을 확인합니다.
+    ![dataframe](../asset/pandas_load6.png)
+
 
 ### 간단한 예
 pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab으로 합니다.
@@ -452,7 +539,7 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
 
 ![dataframe](../asset/sklearn.png)
 
-
+<!-- http 다운로드? 에러 및 마무리 멘트 작성, 전반적 오타 검토 및 멘트 확인 -->
 
 - repl 옵션 확인하기
 - https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn-datasets-load-iris

@@ -9,25 +9,13 @@
     <title>pyscript</title>
 </head>
 <body>
+    <h2>json, csv 파일을 로드에서 DataFrame 만들기</h2>
     <py-config>
         packages = ["pandas", "matplotlib"]
+        [[fetch]]
+        from = './data/'
+        files = ["data1.json", "data2.json", "data1.csv", "data2.csv"]
     </py-config>
-
-    <script type="py">
-        import matplotlib.pyplot as plt
-        import pandas as pd
-
-        # Creating a DataFrame
-        data = {'Year': [2016, 2017, 2018, 2019, 2020],
-                'Sales': [200, 300, 250, 320, 400],
-                'Costs': [150, 200, 180, 220, 250]}
-
-        # df = pd.DataFrame(data)
-
-        display(data, target="out")
-    </script>
-    
-    <div id="out"></div>
     <py-repl auto-generate="true"> </py-repl>
-    </body>
+</body>
 </html>
