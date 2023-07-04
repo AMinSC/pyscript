@@ -3,7 +3,7 @@
 
 ## 3.4.1 matplotlib
 Python에서 시각화 라이브러리로 matplotlib이 있습니다.
-matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습니다.
+matplotlib 공식 사이트에서 몇 가지 샘플로 시각화를 해보겠습니다.
 
 ### 간단한 예
 우선 라이브러리를 모두 불러오겠습니다.
@@ -13,7 +13,7 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 </py-config>
 ```
 
-그 다음 시각화를 하기에 앞서 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법 2가지를 알아보겠습니다.
+그다음 시각화를 하기에 앞서 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법 2가지를 알아보겠습니다.
 
 우선, `<py-config>`태그에 직접 작성하는 방법입니다.
 ```html
@@ -30,12 +30,12 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 </script>
 <div id="out"></div>
 ```
-여기서 display함수의 target파라미터값으로 원하는 태그값의 id를 설정해주면 해당 태그의 자식노드에 div태그가 생성되고 div태그의 자식노드에서 img태그를 통해 화면에 표시가 되며, 파라미터를 작성하지 않을경우 py-script태그의 자식노드에 동일하게 생성되어 화면에서 확인할 수 있습니다. 
+여기서 display함수의 target파라미터값으로 원하는 태그값의 id를 설정해 주면 해당 태그의 자식노드에 div태그가 생성되고 div태그의 자식노드에서 img태그를 통해 화면에 표시가 되며, 파라미터를 작성하지 않을 경우 py-script태그의 자식노드에 동일하게 생성되어 화면에서 확인할 수 있습니다.
 
 ![bar graph](../asset/display.png)
 
 
-이번엔 `<py-repl>`태그를 활용해보겠습니다.
+이번엔 `<py-repl>`태그를 활용해 보겠습니다.
 ```html
 <body>
     <py-config>
@@ -45,7 +45,7 @@ matplotlib 공식 사이트에서 몇가지 샘플로 시각화를 해보겠습�
 </body>
 ```
 
-이제 아래의 코드를 작성하고 실행해봅니다.
+이제 아래의 코드를 작성하고 실행해 봅니다.
 ```python
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -225,7 +225,7 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
 
 ## 3.4.2 pandas
 데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리인 pandas가 있습니다. 
-보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
+
 
 ### json, csv 파일을 불러서 DataFrame을 만들어보는 간단한 예시
 파일을 만들기 전에 `data`라는 폴더를 만들고 `data`폴더 안에 `json`파일과 `csv`파일을 만들어 보겠습니다.
@@ -282,7 +282,11 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
     ```
 
 
-2. `<py-repl>`태그로 `<py-config>`로 경로를 지정해준 `data`폴더의 데이터들을 불러서 확인 해보겠습니다.
+2. CSVode에서 Go Live를 누르면 아래와 같은 창을 확인하실 수 있습니다.
+    ![dataframe](../asset/pandas_load.png)
+
+
+3. `<py-repl>`태그로 `<py-config>`로 경로를 지정해 준 `data`폴더의 데이터들을 불러서 확인해보겠습니다.
     ```python
     import pandas as pd
 
@@ -294,32 +298,29 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
     data2_csv = pd.read_csv('data2.csv')
     ```
 
-
-3. CSVode에서 Go Live를 누르면 아래와 같은 창을 확인하실수 있습니다.
-    ![dataframe](../asset/pandas_load.png)
-
-
-4. html파일에서 `<py-script>`태그로 불러온 json, csv파일을 확장자끼리 concat메서드로 DataFrame으로 만들어 줍니다.
     ![dataframe](../asset/pandas_load2.png)
 
 
-5. DataFrame 변수로 확인해봅니다.
+4. html파일에서 `<py-script>`태그로 불러온 json, csv파일을 확장자끼리 concat메서드로 DataFrame으로 만들어 준 뒤, DataFrame 변수로 확인해 봅니다.
+    ![dataframe](../asset/pandas_load3.png)
+
+
+5. 특정 로우값을 확인해 보면 index가 중복되어 값도 중복으로 나오는 것을 확인할 수 있습니다.
     ![dataframe](../asset/pandas_load4.png)
 
 
-6. 특정 로우값을 확인해보면 index가 중복되어 값도 중복으로 나오는것을 확인할 수 있습니다.
-![dataframe](../asset/pandas_load5.png)
+7. reset_index 메서드를 활용하여 index값을 초기화해 준 뒤, 값을 확인합니다.
+    ![dataframe](../asset/pandas_load5.png)
 
 
-7. reset_index 메서드를 활용하여 index값을 초기화해준 뒤, 값을 확인합니다.
-    ![dataframe](../asset/pandas_load6.png)
+보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
 
 
 ### 간단한 예
 pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab으로 합니다.
 우리는 pyscript의 `<py-config>`태그를 활용하겠습니다.
 
-1. 활용하기에 앞서 기본 Dict형 데이터 틀과 함께 html파일을 아래와 같이 작성한 뒤에 Go Live하여 진행하겠습니다.
+1. 활용하기에 앞서 기본 Dict형 데이터 틀과 함께 html파일을 아래와 같이 작성한 뒤에 Go Live 하여 진행하겠습니다.
     ```html
     <body>
         <py-config>
@@ -348,7 +349,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ![dataframe](../asset/pandas01.png)
 
 
-2. Dict형 데이터를 pandas를 활용하여 DataFrame으로 변환해줍니다.
+2. Dict형 데이터를 pandas를 활용하여 DataFrame으로 변환해 줍니다.
     ```python
     df = pd.DataFrame(data)
     df
@@ -357,7 +358,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ![dataframe](../asset/pandas02.png)
 
 
-3. 위에서 시각화 해주기 위해 사용하였던 라이브러리인 matplotlib을 사용하여 DataFrame형 데이터를 시각화 합니다.
+3. 위에서 시각화해주기 위해 사용하였던 라이브러리인 matplotlib을 사용하여 DataFrame형 데이터를 시각화합니다.
     ```python
     # Plotting the data
     plt.figure(figsize=(10, 5))
@@ -391,7 +392,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
 
 
 ### Table Visualization
-이번에는 DataFrame의 데이터를 보기 좋게 시각화 하는법입니다.
+이번에는 DataFrame의 데이터를 보기 좋게 시각화하는 법입니다.
 
 1. 기존 DataFrame
     ```html
@@ -423,7 +424,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ```
 
     - Jinja2란?
-        Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진 입니다.
+        Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진입니다.
 
     ![dataframe](../asset/dataframe.png)
 
@@ -461,11 +462,15 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ![dataframe](../asset/dataframe3.png)
 
 
+이 외에도 pandas 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
+https://pandas.pydata.org/docs/user_guide/index.html
+
+
 ## 3.4.3 scikit-learn (보류) or 데이터를 읽어와서 사용
 scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러리입니다.
 오픈소스로써 누구나 사용할 수 있고, 해당 라이브러리에는 머신러닝용 데이터와 각종 알고리즘을 제공하고 있습니다.
 
-우리는 scikit-learn을 PyScript에서 활용해보겠습니다.
+우리는 scikit-learn을 PyScript에서 활용해 보겠습니다.
 
 1. `<py-config>`태그에 필요한 Python 라이브러리를 설정하고, 위에서 언급했던 것처럼 `<py-repl>`태그를 활용하겠습니다.
     ```html
@@ -478,7 +483,7 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
     ```
 
 
-2. sklearn 라이브러리로 붗꽃(iris) 데이터를 받아와서 그중에 5개의 raw값을 확인하겠습니다.
+2. sklearn 라이브러리로 붓꽃(iris) 데이터를 받아와서 그중에 5개의 raw값을 확인하겠습니다.
     ```python
     import numpy as np
     from sklearn.datasets import load_iris
@@ -520,7 +525,7 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
     ![dataframe](../asset/sklearn-ml2.png)
 
 
-4. 예측된 오류값을 시각화 합니다.
+4. 예측된 오류값을 시각화합니다.
     ```python
     import matplotlib.pyplot as plt
     from sklearn.metrics import PredictionErrorDisplay
@@ -536,10 +541,9 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
 
     ![dataframe](../asset/sklearn-ml3.png)
 
-
-![dataframe](../asset/sklearn.png)
-
-<!-- http 다운로드? 에러 및 마무리 멘트 작성, 전반적 오타 검토 및 멘트 확인 -->
-
-- repl 옵션 확인하기
 - https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn-datasets-load-iris
+
+
+scikit-learn 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
+https://scikit-learn.org/stable/user_guide.html
+<!-- http 다운로드? 에러 및 마무리 멘트 작성, 멘트 확인 -->
