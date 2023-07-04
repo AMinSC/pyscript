@@ -1,10 +1,13 @@
 # 2.3 Py-config
+HTML에서 Python의 다양한 라이브러리와 Local에서 직접 만든 모듈 혹은 패키지, 오픈소스를 사용하려면 꼭 필요한 태그가 `<py-config>`태그 입니다.
+
+따라서 어떻게 Python의 다양한 라이브러리와 모듈 및 패키지를 불러올 수 있는지 이번장에서 알아보겠습니다.
+
 
 ## 2.3.1 py-config란?
-`<py-config>` 태그를 사용하여 `Python`패키지 혹은 모듈을 설정하고 구성할 수 있습니다. 
+`<py-config>` 태그는 쉽게 말해서, 내가 사용하고자 하는 Python 라이브러리, 모듈 및 패키지를 사용하고자 설정하고 구성하는 곳이라고 생각하시면 됩니다.
 
-
-- 구성은 `TOML(기본값)` 또는 `JSON` 형식으로 설정해야 합니다.
+- 구성은 `TOML`형식과 `JSON` 형식이 있으며, 기본(Default)값은 `TOML`형식입니다.
 
 - TOML 형식
     ```html
@@ -41,17 +44,22 @@
 
 - `<py-config>` 요소는 `<body>` 요소 안에 배치하는 것을 권고합니다.
 
-- 앞으로 예시 코드는 `TOML`형식으로 진행하겠습니다.
+- 앞으로 예시 코드는 `TOML`형식으로 작성하겠습니다.
 
-## 2.3.2 Package 사용법과 예시 코드
-`PyScript`의 이점 중 하나라고 할 수 있는 `Python`의 패키지를 우리가 작업하고자 하는 `HTML`파일에서 사용할 수 있습니다.
-사용하기 위해서는 `HTML`파일 안에서 `<py-config>`태그를 활용하여, 사용하고자 하는 `Python`패키지를 호출한 뒤, 일반 `Python`에서 사용하듯이 `from`과 `import`로 활용하여 사용할 수 있습니다.
+
+## 2.3.2 Package
+이제 본격적으로 `Python` 라이브러리를 구성하는법을 알아보겠습니다.
+
+우선 `<body>`태그 블럭 안에 `<py-config>`태그를 작성합니다.
+작성한 `<py-config>`태그 블럭 안에 구성하고싶은 라이브러리를 `package`라는 값에 리스트 형식으로 넣어줍니다. 이때, 넣고자 하는 패키지는 문자열로 큰따옴표(")로 감싸줍니다. (작은따옴표(')도 사용 가능합니다.)
+
 
 ```html
 <body>
     <py-config>
         package = ["random"]
     </py-config>
+
     <py-script>
         import random
 
@@ -59,9 +67,11 @@
     </py-script>
 </body>
 ```
-위 코드는 `random`패키지를 사용하여, f-string문법으로 1부터 10까지의 랜덤 한 수가 display함수를 통해 웹에서 출력되도록 하는 코드입니다.
 
-그 외에도 `Data Analysis`, `Machine Learning`, `Deep Learning`에서 주로 사용하는 `pandas`, `mabplotlib` 등을 사용할 수 있습니다.
+이후에 `<py-script>`태그 블럭안에서 위에서 구성한 라이브러리를 `import`한 뒤에 사용할 수 있습니다.
+
+
+그 외에도 `Data Analysis`, `Machine Learning`, `Deep Learning`에서 주로 사용하는 `pandas`, `mabplotlib` 등 다양한 라이브러리를 사용할 수 있습니다.
 
 ## 2.3.3. Local Module 사용법과 예시 코드
 만약, 사용하고자 하는 기능이 이전에 `Python`에서 만들었거나, `Python`으로 만들면 좋을 것 같은 `Function`과 `Class`를 `HTML`에서 사용하는 법을 알아보겠습니다.

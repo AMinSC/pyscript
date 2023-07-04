@@ -12,10 +12,14 @@
     <py-config name="min">
         [[fetch]]
         from = '.'
-        files = ["func.py"]
+        files = ['func.py']
     </py-config>
     <py-script>
-        # from pyscript import Pyscript
+        from func import Calculator
+
+
+        cal = Calculator()
+        display(cal.add(2, 24))
 
         my_div = pyscript.create('div', 'my-div', 'container')
         print(my_div.id)  # 출력: my-div
