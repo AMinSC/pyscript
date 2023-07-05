@@ -112,6 +112,7 @@ def lotto_number_generator(game: int):
         print(paper[i])
 ```
 `class`는 간단한 계산기를 구현했으며, `fucntion`의 경우 랜덤한 수 6개를 사용자가 원하는 갯수만큼 반환해주는 기능을 구현했습니다. 
+<!-- class와 function 수정 예정 -->
 
 이제 두 기능을 `<py-config>`태그를 활용해서 같은 경로에 있는`HTML`파일에서 사용하는 법을 알아보겠습니다.
 
@@ -129,14 +130,14 @@ def lotto_number_generator(game: int):
 
 
         cal = Calculator()
-        display(f'더하기 : {cal.add(2, answer_num)}')
-        display(f'빼기 : {cal.sub(answer_num, 2)}')
-        display(f'곱하기 : {cal.mul(2, answer_num)}')
-        display(f'나누기 : {cal.div(answer_num, 2)}')
+        display(f'더하기 : {cal.add(4, 2)}')
+        display(f'빼기 : {cal.sub(4, 2)}')
+        display(f'곱하기 : {cal.mul(4, 2)}')
+        display(f'나누기 : {cal.div(4, 2)}')
         
         select_num = int(input())
         games = lotto_number_generator(select_num)
-        display(f'원하시는 {select_num} 게임의 로또 번호는 아래와 같습니다. \n{games}')
+        display(f'원하시는 {select_num} 게임의 로또 번호입니다. {games}')
     </py-script>
 </body>
 </html>
@@ -153,11 +154,12 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 
 결괏값을 확인할 수 있습니다.
 ![alt text](../asset/sample2.png)
+<!-- /class와 function 수정 예정 -->
 
 
 ## 2.3.4 추가 사용법과 예시 코드
 ### gist 사용법
-만약, 사용하고자 하는 코드가 로컬에 있는것이 아니라, GitHub gist에 있다고 가정한다면, 이를 사용하기 위해선 가까운 경로에 파일을 새로 생성하여 코드를 작성하고 저장하여 호출할 것입니다.
+만약, 사용하고자 하는 코드가 로컬에 있는것이 아니라, GitHub gist에 있다고 가정한다면, 보통 이를 사용하기 위해선 가까운 경로에 파일을 새로 생성하여 코드를 작성하고 저장하여 호출할 것입니다.
 
 하지만, 위 방법은 번거로울 수 있기 때문에, 직접 gist주소를 전달하여 호출하는 방법을 알아보겠습니다.
 
@@ -186,6 +188,8 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 - from `<.py 파일 이름>` import `<.py파일에서 사용하고 싶은 함수 이름>`
 
 ### `<py-config>`에서 지원하는 value값
+`<py-config>`태그에서는 위에서 사용했던 `fetch` 부터 다양한 value값을 지원합니다.
+
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
 | `version`  | string  | 사용자 애플리케이션의 버전입니다. PyScript버전과는 관련이 없습니다.  |
@@ -193,9 +197,11 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 | `plugins`  | List of Plugins  | 플러그인 목록을 여기에 지정합니다.  |
 | `packages`  | List of packages  | 오픈 소스코드를 불러올 수 있습니다.  |
 
-이 외에도 다양한 value 값들이 있습니다.
+이 외에도 다양한 value 값들을 확인하고 싶으신 분들은 `https://docs.pyscript.net/latest/reference/elements/py-config.html#supported-configuration-values`에서 확인 가능합니다.
 
 ### `fetch` 구성
+`fetch`구성은 아래와 같으며,  위에서 사용했었던 `from`과 `file`외에도 `to_folder`와 `to_file`이 있습니다.
+
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
 | `from`  | string  | 가져올 리소스의 기본 URL입니다.  |
@@ -205,19 +211,22 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 
 -  `to_file`과 `files`은 함께 사용할 수 없습니다.
 
-```
-content/
-  ├─ index.html <<< File with <py-config>
-  ├─ info.txt
-  ├─ data/
-  │  ├─ sensordata.csv
-  ├─ packages/
-  │  ├─ my_package/
-  │  │  ├─ __init__.py
-  │  │  ├─ helloworld/
-  │  │  │  ├─ __init__.py
-  │  │  │  ├─ greetings.py
-```
+부가설명을 위해 폴더트리 예시와 info.txt파일 예시는 아래와 같습니다.
+
+- 폴더트리
+    ```
+    content/
+    ├─ index.html <<< File with <py-config>
+    ├─ info.txt
+    ├─ data/
+    │  ├─ sensordata.csv
+    ├─ packages/
+    │  ├─ my_package/
+    │  │  ├─ __init__.py
+    │  │  ├─ helloworld/
+    │  │  │  ├─ __init__.py
+    │  │  │  ├─ greetings.py
+    ```
 
 - info.txt
     ```txt
@@ -237,6 +246,7 @@ content/
         </py-script>
     </body>
     ```
+
     ![alt text](../asset/fetch1.png)
 
 2. 가져온 단일 파일을 이름을 변경하여 사용
@@ -251,6 +261,7 @@ content/
             print(fp.read())
     </py-script>
     ```
+    불러오는 파일 이름을 작업공간에서 임시로 `to_file`로 변경하여 사용하는 법입니다.
 
 3. 가져온 파일을 다른 폴더로 이동
     ```html
@@ -266,8 +277,9 @@ content/
         </py-script>
     </body>
     ```
+    불러온 파일의 경로를 `to_folder`로 임의의 위치로 변경하여 사용하는 법입니다.
 
-4. 가져온 파일을 이름을 변경하여 다른 폴더로 이동
+4. 가져온 파일의 이름을 변경하여 다른 폴더로 이동
     ```html
     <body>
         <py-config>
@@ -282,6 +294,7 @@ content/
         </py-script>
     </body>
     ```
+    2번과 3번을 혼합하여, `to_forder`로 경로를 지정하고 `to_file`로 파일 이름을 변경합니다.
 
 5. 다른 경로의 작업파일을 현재 작업경로 위치로 변경
     ```html
@@ -297,8 +310,9 @@ content/
         </py-script>
     </body>
     ```
+    `from`으로 가져오고자 하는 위치에 경로를 지정해주면, 파일을 불러올 때 해당 경로를 작성하지 않고 현재 작업 위치로('./') 변경하여 사용할 수 있습니다.
 
-6. 다른 경로의 작업파일을 다른 경로로 설정하여 작업할 경우
+6. 기존 경로의 작업파일을 다른 경로로 설정하여 작업할 경우
     ```html
     <body>
         <py-config>
@@ -313,6 +327,7 @@ content/
         </py-script>
     </body>
     ```
+    파일의 경로만 `to_folder`를 사용하여 변경한뒤에 사용할 수 있습니다.
 
 7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 경우
     ```html
@@ -329,6 +344,7 @@ content/
         </py-script>
     </body>
     ```
+    위 예시는 기존에 'packages/my_package/' 경로를 `to_folder`로 변경해준 뒤에 `files`로 my_package와 하위 디렉토리인 helloworld 패키지를 보존하여 불러오는 방법입니다.
 
 8. 파일 이름으로 끝나지 않는 API의 경우
     ```html
@@ -346,9 +362,11 @@ content/
         </py-script>
     </body>
     ```
+    만약, 사용하고자 하는 API의 확장자가 파일이 아닐 경우, `to_file`로 확장자를 설정하여 사용할 수 있습니다.
 
 
 ### Interpreter
+Pyscript는 웹 브라우저에서 실행되기 때문에 webassembly기술인 pyodide로 인터프리터합니다.
 
 | Value  | Type | Description |
 | ------------- | ------------- | ------------- |
@@ -357,7 +375,7 @@ content/
 | `lang`  | string  | interpreter가 지원하는 프로그래밍 언어입니다. 현재 PyScript의 동작 방식에는 영향을 미치지 않습니다.  |
 
 
-Example
+
 기본 `Interpreter`는 아래와 같이 지정할 수 있으며, 다른 버전인 `pyodide`입니다.
 
 ```html
@@ -371,28 +389,3 @@ Example
 
 - 현재 `PyScript`는 단일 인터프리터를 지원하지만 향후 변경될 수 있습니다.
 
-
-### 추가 정보(또는 메타데이터) 제공
-<!-- 보류 -->
-
-위의 방법 외에도 사용자는 메타데이터 정보와 관련이 있거나 애플리케이션 내에서 사용 중인 추가 키와 값을 제공할 수도 있습니다.
-
-예를 들어, 아래 스니펫을 사용하는 것도 유효한 구성이 될 수 있습니다:
-
-- TOML 형식
-    ```html
-    <py-config type="toml">
-    magic = "unicorn"
-    </py-config>
-    ```
-
-- JSON 형식
-    ```html
-    <py-config type="json">
-    {
-        "magic": "unicorn"
-    }
-    </py-config>
-    ```
-
-이 `"magic"` 키가 `src`를 통해 제공된 구성에 있고 `inline`을 통해 제공된 구성에도 있는 경우, `inline` 구성의 값이 우선적으로 적용됩니다. 즉, 재정의 프로세스는 사용자 지정 키에도 적용됩니다.
