@@ -9,24 +9,25 @@
     <title></title>
 </head>
 <body>
-    <py-config name="min">
+    <py-config>
         [[fetch]]
         from = '.'
-        files = ['func.py']
+        files = ["func.py"]
     </py-config>
     <py-script>
         from func import Calculator
+        from func import lotto_number_generator
 
 
         cal = Calculator()
-        display(cal.add(2, 24))
-
-        my_div = pyscript.create('div', 'my-div', 'container')
-        print(my_div.id)  # 출력: my-div
-        print(my_div)
-        print(f'pyscript의 create 값 : {dir(my_div)}\n\n')
-        print(f'pyscript의 값 : {dir(pyscript)}')
+        display(f'더하기 : {cal.add(4, 2)}')
+        display(f'빼기 : {cal.sub(4, 2)}')
+        display(f'곱하기 : {cal.mul(4, 2)}')
+        display(f'나누기 : {cal.div(4, 2)}')
         
+        select_num = int(input())
+        games = lotto_number_generator(select_num)
+        display(f'원하시는 {select_num} 게임의 로또 번호입니다. {games}')
     </py-script>
 </body>
 </html>

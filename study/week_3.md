@@ -1,11 +1,11 @@
 # 2.3 Py-config
-HTML에서 Python의 다양한 라이브러리와 Local에서 직접 만든 모듈 혹은 패키지, 오픈소스를 사용하려면 꼭 필요한 태그가 `<py-config>`태그 입니다.
+HTML에서 Python의 다양한 라이브러리와 Local에서 직접 만든 모듈과 패키지, 혹은 오픈소스를 사용하려면 꼭 필요한 태그가 `<py-config>`태그 입니다.
 
 따라서 어떻게 Python의 다양한 라이브러리와 모듈 및 패키지를 불러올 수 있는지 이번장에서 알아보겠습니다.
 
 
 ## 2.3.1 py-config란?
-`<py-config>` 태그는 쉽게 말해서, 내가 사용하고자 하는 Python 라이브러리, 모듈 및 패키지를 사용하고자 설정하고 구성하는 곳이라고 생각하시면 됩니다.
+`<py-config>` 태그는 쉽게 말해서, 내가 사용하고자 하는 Python 라이브러리 및 모듈, 패키지, 오픈소스를 설정하고 구성하는 곳입니다.
 
 - 구성은 `TOML`형식과 `JSON` 형식이 있으며, 기본(Default)값은 `TOML`형식입니다.
 
@@ -71,10 +71,10 @@ HTML에서 Python의 다양한 라이브러리와 Local에서 직접 만든 모�
 이후에 `<py-script>`태그 블럭안에서 위에서 구성한 라이브러리를 `import`한 뒤에 사용할 수 있습니다.
 
 
-그 외에도 `Data Analysis`, `Machine Learning`, `Deep Learning`에서 주로 사용하는 `pandas`, `mabplotlib` 등 다양한 라이브러리를 사용할 수 있습니다.
+그 외에도 `Data Analysis`, `Machine Learning`, `Deep Learning`에서 주로 사용하는 `pandas`, `mabplotlib` 등 다양한 라이브러리를 구성하고 사용할 수 있습니다.
 
 ## 2.3.3. Local Module 사용법과 예시 코드
-만약, 사용하고자 하는 기능이 이전에 `Python`에서 만들었거나, `Python`으로 만들면 좋을 것 같은 `Function`과 `Class`를 `HTML`에서 사용하는 법을 알아보겠습니다.
+만약, 사용하고자 하는 기능을 `Python`으로 이전에 만들었거나, 만들면 좋을 것 같은 기능들을 `HTML`에서 사용하는 법을 알아보겠습니다.
 
 알아보기에 앞서, `func.py`파일 내용이 아래와 같다고 가정하겠습니다.
 ```py
@@ -88,23 +88,30 @@ class Calculator:
     def add(self, a, b):
         return a + b
 
-    def subtract(self, a, b):
+    def sub(self, a, b):
         return a - b
 
-    def multiply(self, a, b):
+    def mul(self, a, b):
         return a * b
 
-    def divide(self, a, b):
+    def div(self, a, b):
         if b == 0:
             return "Error: Division by zero is not allowed"
         else:
             return a / b
 
 
-def random_add(num):
-    return num + random.randint(1, 10)
+def lotto_number_generator(game: int):
+    paper = []
+    for _ in range(game):
+        lotto_numbers = random.sample(range(1, 46), 6)
+        paper.append(lotto_numbers)
+    
+    for i, v in enumerate(paper):
+        paper[i] = sorted(v)
+        print(paper[i])
 ```
-`class`는 간단한 계산기를 구현했으며, `fucntion`의 경우 1부터 10 사이의 수를 랜덤 하게 더해주는 기능을 구현했습니다. 
+`class`는 간단한 계산기를 구현했으며, `fucntion`의 경우 랜덤한 수 6개를 사용자가 원하는 갯수만큼 반환해주는 기능을 구현했습니다. 
 
 이제 두 기능을 `<py-config>`태그를 활용해서 같은 경로에 있는`HTML`파일에서 사용하는 법을 알아보겠습니다.
 
@@ -117,19 +124,19 @@ def random_add(num):
         files = ["func.py"]
     </py-config>
     <py-script>
-        from func import random_add
         from func import Calculator
+        from func import lotto_number_generator
 
-
-        select_num = int(input())
-        answer_num = random_add(select_num)
-        display(f'1부터 10까지의 랜덤한 수를 더한 값 : {answer_num}')
 
         cal = Calculator()
         display(f'더하기 : {cal.add(2, answer_num)}')
         display(f'빼기 : {cal.sub(answer_num, 2)}')
         display(f'곱하기 : {cal.mul(2, answer_num)}')
         display(f'나누기 : {cal.div(answer_num, 2)}')
+        
+        select_num = int(input())
+        games = lotto_number_generator(select_num)
+        display(f'원하시는 {select_num} 게임의 로또 번호는 아래와 같습니다. \n{games}')
     </py-script>
 </body>
 </html>

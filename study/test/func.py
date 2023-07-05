@@ -21,5 +21,13 @@ class Calculator:
             return a / b
 
 
-def random_add(num):
-    return num + random.randint(1, 10)
+def lotto_number_generator(game: int):
+    paper = []
+    for _ in range(game):
+        lotto_numbers = random.sample(range(1, 46), 6)
+        paper.append(lotto_numbers)
+    
+    for i, v in enumerate(paper):
+        paper[i] = sorted(v)
+    
+    return paper
