@@ -1,9 +1,10 @@
 # 3.4 시각화 (데이터 분석) + py-repl로 데이터 처리가능
-이번 장에서는 `<py-config>`태그로 Python Package를 구성하여 간단하게 시각화를 해보겠습니다.
+Python은 머신러닝과 데이터 분석을 하는데 적합한 프로그래밍 언어입니다.
+그렇기 때문에 데이터 분석과 간단한 머신러닝 지표를 `PyScript`를 통해 웹페이지에서 시각화 해보겠습니다.
 
 ## 3.4.1 matplotlib
 Python에서 시각화 라이브러리로 matplotlib이 있습니다.
-matplotlib 공식 사이트에서 몇 가지 샘플로 시각화를 해보겠습니다.
+matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보겠습니다.
 
 ### 간단한 예
 우선 라이브러리를 모두 불러오겠습니다.
@@ -13,62 +14,60 @@ matplotlib 공식 사이트에서 몇 가지 샘플로 시각화를 해보겠습
 </py-config>
 ```
 
-그다음 시각화를 하기에 앞서 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법 2가지를 알아보겠습니다.
+시각화를 하는데는 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법으로 총 2가지를 알아보겠습니다.
 
-우선, `<py-config>`태그에 직접 작성하는 방법입니다.
-```html
-<script type="py">
+- 첫 번째로, `<py-config>`태그에 직접 작성하는 방법입니다.
+    ```html
+    <script type="py">
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        
+        fig, ax = plt.subplots()  # Create a figure containing a single axes.
+        ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
+
+        display(plt, target="out")
+    </script>
+    <div id="out"></div>
+    ```
+
+    ![bar graph](../asset/matplotlib0.png)
+
+    - 여기서 display함수의 target파라미터값으로 원하는 태그값의 id를 설정해 주면 해당 태그의 자식노드에 div태그가 생성되고 div태그의 자식노드에서 img태그를 통해 화면에 표시가 되며, 파라미터를 작성하지 않을 경우 py-script태그의 자식노드에 동일하게 생성되어 화면에서 확인할 수 있습니다.
+
+        ![bar graph](../asset/display.png)
+
+
+- 마지막 두 번째로 `<py-repl>`태그를 활용해 보겠습니다.
+    ```html
+    <body>
+        <py-config>
+            packages = ["matplotlib", "numpy"]
+        </py-config>
+        <py-repl auto-generate="true"> </py-repl>
+    </body>
+    ```
+
+    이제 아래의 코드를 작성하고 실행해 봅니다.
+    ```python
     import matplotlib as mpl
     import matplotlib.pyplot as plt
     import numpy as np
 
-    
+
     fig, ax = plt.subplots()  # Create a figure containing a single axes.
     ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
 
-    display(plt, target="out")
-</script>
-<div id="out"></div>
-```
-여기서 display함수의 target파라미터값으로 원하는 태그값의 id를 설정해 주면 해당 태그의 자식노드에 div태그가 생성되고 div태그의 자식노드에서 img태그를 통해 화면에 표시가 되며, 파라미터를 작성하지 않을 경우 py-script태그의 자식노드에 동일하게 생성되어 화면에서 확인할 수 있습니다.
+    plt
+    ```
 
-![bar graph](../asset/display.png)
+    ![bar graph](../asset/matplotlib.png)
 
 
-이번엔 `<py-repl>`태그를 활용해 보겠습니다.
-```html
-<body>
-    <py-config>
-        packages = ["matplotlib", "numpy"]
-    </py-config>
-    <py-repl auto-generate="true"> </py-repl>
-</body>
-```
-
-이제 아래의 코드를 작성하고 실행해 봅니다.
-```python
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-
-
-fig, ax = plt.subplots()  # Create a figure containing a single axes.
-ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
-
-plt
-```
-
-![bar graph](../asset/matplotlib.png)
-
-
-
-이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
-
-matplotlib 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
-https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-tutorials-introductory-quick-start-py
-
+<!-- 샘플코드 삭제 or 보류 -->
 ### Lines, bars and markers(선, 막대 및 마커)
-1. Bar Color
+1. 과일종류 및 색상별 과일 공급량 시각화
     ```html
     <body>
         <py-config>
@@ -101,7 +100,7 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
     ![bar graph](../asset/bar.png)
 
 
-2. Grouped bar chart with labels
+2. 펭귄 종별 속성 시각화
     ```html
     <body>
         <py-config>
@@ -150,81 +149,19 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
     ![Grouped bar chart](../asset/group-bar.png)
 
 
-### Images, contours and fields
-
-1. Pseudocolor plots of unstructured triangular grids.
-
-    ```html
-    <body>
-        <py-config>
-            packages = ["matplotlib"]
-        </py-config>
-
-        <script type="py">
-            import matplotlib.pyplot as plt
-            import matplotlib.tri as tri
-            import numpy as np
-
-            
-            # First create the x and y coordinates of the points.
-            n_angles = 36
-            n_radii = 8
-            min_radius = 0.25
-            radii = np.linspace(min_radius, 0.95, n_radii)
-
-            angles = np.linspace(0, 2 * np.pi, n_angles, endpoint=False)
-            angles = np.repeat(angles[..., np.newaxis], n_radii, axis=1)
-            angles[:, 1::2] += np.pi / n_angles
-
-            x = (radii * np.cos(angles)).flatten()
-            y = (radii * np.sin(angles)).flatten()
-            z = (np.cos(radii) * np.cos(3 * angles)).flatten()
-
-            # Create the Triangulation; no triangles so Delaunay triangulation created.
-            triang = tri.Triangulation(x, y)
-
-            # Mask off unwanted triangles.
-            triang.set_mask(np.hypot(x[triang.triangles].mean(axis=1),
-                                    y[triang.triangles].mean(axis=1))
-                            < min_radius)
-
-
-            fig1, ax1 = plt.subplots()
-            ax1.set_aspect('equal')
-            tpc = ax1.tripcolor(triang, z, shading='flat')
-            fig1.colorbar(tpc)
-            ax1.set_title('tripcolor of Delaunay triangulation, flat shading')
-
-            display(plt, target="Triangulation")
-        </script>
-
-        <div id="Triangulation"></div>
-    </body>
-    ```
-
-    ![Triangulation](../asset/Triangulation.png)
-
-
-2. Illustrate Gouraud shading.
-
-    ```python
-    fig2, ax2 = plt.subplots()
-    ax2.set_aspect('equal')
-    tpc = ax2.tripcolor(triang, z, shading='gouraud')
-    fig2.colorbar(tpc)
-    ax2.set_title('tripcolor of Delaunay triangulation, gouraud shading')
-    plt
-    ```
-
-    ![Triangulation](../asset/Gouraud-shading.png)
-
-
 외에도 정말 다양한 시각화 샘플 코드가 있습니다.
 관심 있으시다면 공식 사이트 방문을 권장드립니다.
 `https://matplotlib.org/stable/gallery/index.html`
 
+- 이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
+
+matplotlib 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
+https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-tutorials-introductory-quick-start-py
+
+
 ## 3.4.2 pandas
-데이터 분석에 용이한 DataFrame을 사용할 수 있는 라이브러리인 pandas가 있습니다. 
+
+Python 라이브러리인 pandas는 데이터 분석에 용이한 DataFrame을 사용할 수 있습니다.
 
 
 ### json, csv 파일을 불러서 DataFrame을 만들어보는 간단한 예시

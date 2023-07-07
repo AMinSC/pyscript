@@ -10,6 +10,18 @@
     <py-config>
         packages = ["matplotlib", "numpy"]
     </py-config>
+    <script type="py">
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        
+        fig, ax = plt.subplots()  # Create a figure containing a single axes.
+        ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
+
+        display(plt, target="out")
+    </script>
+    <div id="out"></div>
     <py-repl auto-generate="true"> </py-repl>
 </body>
 </html>
