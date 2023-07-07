@@ -4,7 +4,7 @@ Python은 머신러닝과 데이터 분석을 하는데 적합한 프로그래�
 
 ## 3.4.1 matplotlib
 Python에서 시각화 라이브러리로 matplotlib이 있습니다.
-matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보겠습니다.
+matplotlib 공식 사이트를 참고하여, 몇 가지 샘플코드로 시각화를 해보겠습니다.
 
 ### 간단한 예
 우선 라이브러리를 모두 불러오겠습니다.
@@ -16,9 +16,9 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
 
 시각화를 하는데는 `<py-script>`태그에 직접 작성하는 방법과 `<py-repl>`태그로 jupyter 환경처럼 작성하는 방법으로 총 2가지를 알아보겠습니다.
 
-- 첫 번째로, `<py-config>`태그에 직접 작성하는 방법입니다.
+- 첫 번째로, `<py-script>`태그에 직접 작성하는 방법입니다.
     ```html
-    <script type="py">
+    <py-script>
         import matplotlib as mpl
         import matplotlib.pyplot as plt
         import numpy as np
@@ -28,7 +28,7 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
         ax.plot([1, 2, 3, 4], [1, 4, 2, 3])  # Plot some data on the axes.
 
         display(plt, target="out")
-    </script>
+    </py-script>
     <div id="out"></div>
     ```
 
@@ -64,6 +64,9 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
 
     ![bar graph](../asset/matplotlib.png)
 
+위와 동일한 시각화가 나온것을 확인할 수 있습니다.
+입맛에 맞게 사용할 순 있으나, 보통 샘플코드 처럼 한번에 원하는 값을 도출하긴 어렵기 때문에, 여러번 테스트하고 실행하는것을 감안하면 `<py-repl>`태그를 활용하는것이 유용할 것입니다.
+
 
 <!-- 샘플코드 삭제 or 보류 -->
 ### Lines, bars and markers(선, 막대 및 마커)
@@ -74,7 +77,7 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
             packages = ["matplotlib"]
         </py-config>
 
-        <script type="py">
+        <py-script>
             import matplotlib.pyplot as plt
 
             fig, ax = plt.subplots()
@@ -91,7 +94,7 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
             ax.legend(title='Fruit color')
 
             display(plt, target="bar")
-        </script>
+        </py-script>
 
         <div id="bar"></div>
     </body>
@@ -107,7 +110,7 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
             packages = ["matplotlib"]
         </py-config>
 
-        <script type="py">
+        <py-script>
             # data from https://allisonhorst.github.io/palmerpenguins/
 
             import matplotlib.pyplot as plt
@@ -140,7 +143,7 @@ matplotlib 공식 사이트에서 몇 가지 샘플코드로 시각화를 해보
             ax.set_ylim(0, 250)
 
             display(plt, target="graph-bar")
-        </script>
+        </py-script>
 
         <div id="graph-bar"></div>
     </body>
@@ -160,12 +163,23 @@ https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-t
 
 
 ## 3.4.2 pandas
-
 Python 라이브러리인 pandas는 데이터 분석에 용이한 DataFrame을 사용할 수 있습니다.
 
 
-### json, csv 파일을 불러서 DataFrame을 만들어보는 간단한 예시
+### json, csv 파일을 Load해서 DataFrame을 만들어보는 간단한 예시
 파일을 만들기 전에 `data`라는 폴더를 만들고 `data`폴더 안에 `json`파일과 `csv`파일을 만들어 보겠습니다.
+
+- 폴더트리
+    ```
+    /
+    ├─ index.html <<< File with <py-config>
+    ├─ data/
+    │  ├─ data1.json
+    │  ├─ data2.json
+    │  ├─ data1.csv
+    │  ├─ data2.csv
+    ```
+
 - data1.json
     ```json
     [
@@ -205,7 +219,7 @@ Python 라이브러리인 pandas는 데이터 분석에 용이한 DataFrame을 �
     ```
 
 
-1. `<py-config>`태그로 패키지를 불러올 때, 만들어준 폴더에서 파일들을 불러오기 위해 경로와 파일설정을 같이 해줍니다.
+1. 이제 필요한 데이터를 불러오기 위해 `<py-config>`태그 블럭 안에, data폴더는 `from`으로 설정해주고, `files`에 사용할 json, csv파일들을 설정 해줍니다.
     ```html
     <body>
         <py-config>
@@ -214,12 +228,14 @@ Python 라이브러리인 pandas는 데이터 분석에 용이한 DataFrame을 �
             from = './data/'
             files = ["data1.json", "data2.json", "data1.csv", "data2.csv"]
         </py-config>
+
+        
         <py-repl auto-generate="true"> </py-repl>
     </body>
     ```
 
 
-2. CSVode에서 Go Live를 누르면 아래와 같은 창을 확인하실 수 있습니다.
+2. VSCode에서 Go Live를 누르면 아래와 같은 창을 확인하실 수 있습니다.
     ![dataframe](../asset/pandas_load.png)
 
 
@@ -250,21 +266,21 @@ Python 라이브러리인 pandas는 데이터 분석에 용이한 DataFrame을 �
     ![dataframe](../asset/pandas_load5.png)
 
 
-보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
-
 
 ### 간단한 예
-pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab으로 합니다.
-우리는 pyscript의 `<py-config>`태그를 활용하겠습니다.
+보통 json, csv파일을 load 하여 사용하지만 이번 장에서는 다른 data를 사용하지 않고 임의에 데이터로 실습해 보겠습니다.
+데이터분석은 주로 jupyter notebook이나 colab으로 합니다.
+우리는 pyscript의 `<py-repl>`태그를 활용하겠습니다.
 
 1. 활용하기에 앞서 기본 Dict형 데이터 틀과 함께 html파일을 아래와 같이 작성한 뒤에 Go Live 하여 진행하겠습니다.
+먼저 필요한 라이브러리인 pandas 및 matplotlib.pyplot을 가져옵니다.
     ```html
     <body>
         <py-config>
             packages = ["pandas", "matplotlib"]
         </py-config>
 
-        <script type="py">
+        <py-script>
             import pandas as pd
             import matplotlib.pyplot as plt
 
@@ -276,7 +292,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
             # df = pd.DataFrame(data)
 
             display(data, target="out")
-        </script>
+        </py-script>
 
         <div id="out"></div>
         <py-repl auto-generate="true"> </py-repl>
@@ -295,7 +311,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
     ![dataframe](../asset/pandas02.png)
 
 
-3. 위에서 시각화해주기 위해 사용하였던 라이브러리인 matplotlib을 사용하여 DataFrame형 데이터를 시각화합니다.
+3. 위에서 시각화해주기 위해 사용하였던 라이브러리인 matplotlib을 사용하여 DataFrame을 시각화합니다.
     ```python
     # Plotting the data
     plt.figure(figsize=(10, 5))
@@ -317,19 +333,11 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
 
     ![dataframe](../asset/pandas03.png)
 
-- 먼저 필요한 라이브러리인 pandas 및 matplotlib.pyplot을 가져옵니다.
-
-- key가 column name이고 value가 data 목록인 Dict를 사용하여 DataFrame을 만들었습니다.
-
-- matplotlib.pyplot을 사용하여 'Year' col 위에 'Sales' 및 'Costs' col의 선 도표를 만들었습니다.
-
-- label, title, legend(범례)를 추가하여 플롯을 보다 유익하게 만들었습니다.
-
-- 마지막으로 plt.show()를 사용하여 플롯을 표시하지만, `py-repl`에서는 plt로 표시했습니다.
+- 연간 매출 및 비용을 시각화를 통해 알아봤습니다.
 
 
 ### Table Visualization
-이번에는 DataFrame의 데이터를 보기 좋게 시각화하는 법입니다.
+이번에는 기존에 그래프와는 다르게 DataFrame을 보기 좋게 시각화하는 방법입니다.
 
 1. 기존 DataFrame
     ```html
@@ -338,7 +346,7 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
             packages = ["pandas", "numpy", "matplotlib", "Jinja2"]
         </py-config>
 
-        <script type="py">
+        <py-script>
             import pandas as pd
             import numpy as np
             import matplotlib as mpl
@@ -353,17 +361,18 @@ pandas는 데이터분석 라이브러리로 주로 jupyter notebook이나 colab
             .format_index(str.upper, axis=1) \
             .relabel_index(["row 1", "row 2"], axis=0)
             display(data, target="out")
-        </script>
+        </py-script>
 
         <div id="out"></div>
         <py-repl auto-generate="true"> </py-repl>
     </body>
     ```
 
+    ![dataframe](../asset/dataframe.png)
+
+
     - Jinja2란?
         Jinja2는 Data와 Template를 결합하여 Documents를 렌더링 해주는 Python용 템플릿 엔진입니다.
-
-    ![dataframe](../asset/dataframe.png)
 
 
 2. style 메서드로 시각화를 곁들인 DataFrame
@@ -483,4 +492,3 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
 
 scikit-learn 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
 https://scikit-learn.org/stable/user_guide.html
-<!-- http 다운로드? 에러 및 마무리 멘트 작성, 멘트 확인, 코드 중복 체크(이미지) -->
