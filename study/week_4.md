@@ -71,7 +71,6 @@ Matplotlib는 Python에서 널리 사용되는 데이터 시각화 라이브러�
 입맛에 맞게 사용할 순 있으나, 보통 샘플코드 처럼 한번에 원하는 값을 도출하긴 어렵기 때문에, 여러번 테스트하고 실행하는것을 감안하면 `<py-repl>`태그를 활용하는것이 유용할 것입니다.
 
 
-<!-- 샘플코드 삭제 or 보류 -->
 ### Lines, bars and markers(선, 막대 및 마커)
 1. 과일종류 및 색상별 과일 공급량 시각화
     ```html
@@ -155,11 +154,10 @@ Matplotlib는 Python에서 널리 사용되는 데이터 시각화 라이브러�
     ![Grouped bar chart](../asset/group-bar.png)
 
 
-외에도 정말 다양한 시각화 샘플 코드가 있습니다.
-관심 있으시다면 공식 사이트 방문을 권장드립니다.
-`https://matplotlib.org/stable/gallery/index.html`
+이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
 
-- 이 장에서는 matplotlib 라이브러리를 깊게 배우기보단, PyScript에서 Python 라이브러리를 응용하여 시각화를 할 수 있음에 초점을 두겠습니다.
+다양한 시각화 샘플코드가 궁금하시다면 아래의 링크를 확인 부탁드리겠습니다.
+https://matplotlib.org/stable/gallery/index.html
 
 matplotlib 라이브러리에 관심이 있으시다면, 공식 홈페이지 가이드를 참고 부탁드리겠습니다.
 https://matplotlib.org/stable/tutorials/introductory/quick_start.html#sphx-glr-tutorials-introductory-quick-start-py
@@ -422,7 +420,7 @@ https://pandas.pydata.org/docs/user_guide/index.html
 
 ## 3.4.3 scikit-learn or 데이터를 읽어와서 사용
 scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러리입니다.
-오픈소스로써 누구나 사용할 수 있고, 해당 라이브러리에는 머신러닝용 데이터와 각종 알고리즘을 제공하고 있습니다.
+오픈소스로써 누구나 사용할 수 있고, 해당 라이브러리에는 데이터와 각종 알고리즘을 제공하고 있습니다.
 
 우리는 scikit-learn을 PyScript에서 활용해 보겠습니다.
 
@@ -463,7 +461,7 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
     ![dataframe](../asset/sklearn-ml.png)
 
 
-3. 머신러닝 알고리즘으로 학습
+3. 머신러닝 알고리즘(HistGradientBoostingRegressor)으로 학습
     ```python
     from sklearn.datasets import load_diabetes
     from sklearn.ensemble import HistGradientBoostingRegressor
@@ -479,7 +477,7 @@ scikit-learn이란 Python 프로그래밍 언어 용 머신러닝 라이브러�
     ![dataframe](../asset/sklearn-ml2.png)
 
 
-4. 예측된 오류값을 시각화합니다.
+4. 예측된 결괏값을 시각화합니다.
     ```python
     import matplotlib.pyplot as plt
     from sklearn.metrics import PredictionErrorDisplay

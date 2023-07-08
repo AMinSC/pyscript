@@ -10,24 +10,9 @@
 </head>
 <body>
     <py-config>
-        [[fetch]]
-        from = '.'
-        files = ["func.py"]
+        [fetch]
+        from = 'https://gist.githubusercontent.com/AMinSC/169b9f6c973690f9310528e465d10688/raw/27bb8acea57d407789b0940f8b127db9b9a837a4/'
+        files = 'todo.txt'
     </py-config>
-    <py-script>
-        from func import Calculator
-        from func import lotto_number_generator
-
-
-        cal = Calculator()
-        display(f'더하기 : {cal.add(4, 2)}')
-        display(f'빼기 : {cal.sub(4, 2)}')
-        display(f'곱하기 : {cal.mul(4, 2)}')
-        display(f'나누기 : {cal.div(4, 2)}')
-        
-        select_num = int(input())
-        games = lotto_number_generator(select_num)
-        display(f'원하시는 {select_num} 게임의 로또 번호입니다. {games}')
-    </py-script>
 </body>
 </html>

@@ -74,7 +74,7 @@ HTML에서 Python의 다양한 라이브러리와 Local에서 직접 만든 모�
 그 외에도 `Data Analysis`, `Machine Learning`, `Deep Learning`에서 주로 사용하는 `pandas`, `mabplotlib` 등 다양한 라이브러리를 구성하고 사용할 수 있습니다.
 
 ## 2.3.3. Local Module 사용법과 예시 코드
-만약, 사용하고자 하는 기능을 `Python`으로 이전에 만들었거나, 만들면 좋을 것 같은 기능들을 `HTML`에서 사용하는 법을 알아보겠습니다.
+Local에서 Python으로 만들어 둔 Module을 `PyScript`를 통해 사용하는 법을 알아보겠습니다.
 
 알아보기에 앞서, `func.py`파일 내용이 아래와 같다고 가정하겠습니다.
 ```py
@@ -111,8 +111,7 @@ def lotto_number_generator(game: int):
         paper[i] = sorted(v)
         print(paper[i])
 ```
-`class`는 간단한 계산기를 구현했으며, `fucntion`의 경우 랜덤한 수 6개를 사용자가 원하는 갯수만큼 반환해주는 기능을 구현했습니다. 
-<!-- class와 function 수정 예정 -->
+`class`는 간단한 계산기를 구현했으며, `fucntion`의 경우 사용자가 원하는 갯수만큼 로또 번호를 랜덤하게 생성해서 반환해주는 기능을 구현했습니다. 
 
 이제 두 기능을 `<py-config>`태그를 활용해서 같은 경로에 있는`HTML`파일에서 사용하는 법을 알아보겠습니다.
 
@@ -146,7 +145,7 @@ def lotto_number_generator(game: int):
 `<py-config>`태그 안에는 우선 `[[fetch]]`를 통해서 `from`은 파일 경로, `files`는 파일 이름을 적어줍니다.
 여기서 파일 이름은 확장자까지 적어줘야 합니다.
 
-VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
+`Live Server`를 통해 실행해보면 아래와 같습니다.
 
 우선 `input`값을 받고,
 ![alt text](../asset/sample.png)
@@ -154,7 +153,6 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 
 결괏값을 확인할 수 있습니다.
 ![alt text](../asset/sample2.png)
-<!-- /class와 function 수정 예정 -->
 
 
 ## 2.3.4 추가 사용법과 예시 코드
@@ -249,37 +247,7 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
 
     ![alt text](../asset/fetch1.png)
 
-2. 가져온 단일 파일을 이름을 변경하여 사용
-    ```html
-    <py-config>
-        [[fetch]]
-        from = 'info.txt'
-        to_file = 'info_loaded_from_web.txt'
-    </py-config>
-    <py-script>
-        with open('info_loaded_from_web.txt', 'r') as fp:
-            print(fp.read())
-    </py-script>
-    ```
-    불러오는 파일 이름을 작업공간에서 임시로 `to_file`로 변경하여 사용하는 법입니다.
-
-3. 가져온 파일을 다른 폴더로 이동
-    ```html
-    <body>
-        <py-config>
-            [[fetch]]
-            files = ['info.txt']
-            to_folder = 'infofiles/loaded_info'
-        </py-config>
-        <py-script>
-            with open('infofiles/loaded_info/info.txt', 'r') as fp:
-                print(fp.read())
-        </py-script>
-    </body>
-    ```
-    불러온 파일의 경로를 `to_folder`로 임의의 위치로 변경하여 사용하는 법입니다.
-
-4. 가져온 파일의 이름을 변경하여 다른 폴더로 이동
+2. 가져온 파일의 이름을 변경하여 다른 폴더로 이동
     ```html
     <body>
         <py-config>
@@ -294,25 +262,9 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
         </py-script>
     </body>
     ```
-    2번과 3번을 혼합하여, `to_forder`로 경로를 지정하고 `to_file`로 파일 이름을 변경합니다.
+    `to_forder`로 임의의 경로를 지정하고 `to_file`로 파일 이름을 변경합니다.
 
-5. 다른 경로의 작업파일을 현재 작업경로 위치로 변경
-    ```html
-    <body>
-        <py-config>
-            [[fetch]]
-            from = 'data/'
-            files = ['sensordata.csv']
-        </py-config>
-        <py-script>
-            with open('./sensordata.csv', 'r') as fp:
-            print(fp.read())
-        </py-script>
-    </body>
-    ```
-    `from`으로 가져오고자 하는 위치에 경로를 지정해주면, 파일을 불러올 때 해당 경로를 작성하지 않고 현재 작업 위치로('./') 변경하여 사용할 수 있습니다.
-
-6. 기존 경로의 작업파일을 다른 경로로 설정하여 작업할 경우
+3. 기존 경로의 작업파일을 다른 경로로 설정하여 작업할 경우
     ```html
     <body>
         <py-config>
@@ -327,9 +279,10 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
         </py-script>
     </body>
     ```
+    `from`으로 가져오고자 하는 위치에 경로를 지정해주면, 파일을 불러올 때 해당 경로를 작성하지 않고 현재 작업 위치로('./') 변경하여 사용할 수 있습니다.
     파일의 경로만 `to_folder`를 사용하여 변경한뒤에 사용할 수 있습니다.
 
-7. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 경우
+4. 패키지 구조 혹은 폴더 트리를 보존하여 불러올 경우
     ```html
     <body>
         <py-config>
@@ -346,7 +299,7 @@ VSCode의 `Go Live`를 통해 실행해보면 아래와 같습니다.
     ```
     위 예시는 기존에 'packages/my_package/' 경로를 `to_folder`로 변경해준 뒤에 `files`로 my_package와 하위 디렉토리인 helloworld 패키지를 보존하여 불러오는 방법입니다.
 
-8. 파일 이름으로 끝나지 않는 API의 경우
+5. 파일 이름으로 끝나지 않는 API의 경우
     ```html
     <body>
         <py-config>
