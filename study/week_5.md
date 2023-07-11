@@ -1,9 +1,4 @@
-```python
-import numpy as np
-import pandas as pd
-import folium
-```
-
+1. 제주도 오름 데이터
 ```html
 <body>
     <py-config>
@@ -17,6 +12,11 @@ import folium
 ```
 
 ```python
+import numpy as np
+import pandas as pd
+import folium
+
+
 m = folium.Map(
     location = [33.3684, 126.5291],
     zoom_start = 10
@@ -76,3 +76,9 @@ m
 ```
 
 출처 - inflearn : 공공데이터와 Folium(Python Library)으로 만드는 제주 오름 지도 안내 서비스
+- https://www.inflearn.com/course/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%ED%8F%B4%EB%A6%AC%EC%9B%80-%EC%A7%80%EB%8F%84%EC%84%9C%EB%B9%84%EC%8A%A4/dashboard
+
+
+2. 휴게소 데이터
+- 공공데이터 테이블 2개 합친 뒤, 간략한 전처리
+- Folium, geopandas 학습 및 PyScript 접목
