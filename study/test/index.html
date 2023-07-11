@@ -10,9 +10,11 @@
 </head>
 <body>
     <py-config>
-        [fetch]
-        from = 'https://gist.githubusercontent.com/AMinSC/169b9f6c973690f9310528e465d10688/raw/27bb8acea57d407789b0940f8b127db9b9a837a4/'
-        files = 'todo.txt'
+        packages = ["numpy", "pandas", "folium"]
+        [[fetch]]
+        from = "./data/"
+        files = ["o.csv"]
     </py-config>
+    <py-repl auto-generate="true"> </py-repl>
 </body>
 </html>
