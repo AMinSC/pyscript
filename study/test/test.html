@@ -10,11 +10,37 @@
 </head>
 <body>
     <py-config>
-        packages = ["pandas", "numpy"]
+        packages = ["folium", "pandas", "numpy"]
         [[fetch]]
         from = "./data/"
-        files = ["rest-area1.csv", "rest-area2.csv"]
+        files = ["rest-area1.csv", "rest-area2.csv", "rest-area3.csv"]
     </py-config>
+    <py-script>
+        import numpy as np
+        import pandas as pd
+        import folium
+
+
+        m = folium.Map(
+            location = [36.4989, 127.9606],
+            zoom_start = 8
+        )
+
+        tooltip = 'Click!!'
+
+        o = pd.read_csv('rest-area3.csv', encoding='CP949')
+
+        
+        for i in range(o.shape[0]):
+            folium.Marker(
+                [o.iloc[i]['위도'], o.iloc[i]['경도']],
+                popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br> 전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong></div>',
+                tooltip = tooltip
+            ).add_to(m)
+
+        display(m, target='map')
+    </py-script>
+    <div id="map"></div>
     <py-repl auto-generate="true"></py-repl>
 </body>
 </html>
