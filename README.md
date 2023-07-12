@@ -25,5 +25,7 @@ Learning pyscript and writing books
         - sklearn (보류) or 데이터를 읽어와서 사용
 -week_5
     - [미니프로젝트]()
-    - PyScript로 간단한 쇼핑몰 만들기
-    - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소)
+    - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소 Status)
+        - 그룹 체크박스
+        - 김천(서울 방향) 음식명 글자 깨짐
+    - 
