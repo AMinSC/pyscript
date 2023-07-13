@@ -23,9 +23,14 @@ Learning pyscript and writing books
         - matplotlib
         - pandas
         - sklearn (보류) or 데이터를 읽어와서 사용
--week_5
-    - [미니프로젝트]()
+- week_5
+    - [미니프로젝트](https://github.com/AMinSC/pyscript/blob/main/study/week_5.md)
     - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소 Status)
-        - 그룹 체크박스
         - 김천(서울 방향) 음식명 글자 깨짐
-    - 
+        - 핀 묶음(클러스터)
+        - 옵션이나 필터
+        - 경로 별 필터 검색 기능?
+        - 장바구니 처럼 목적지에 필요한 휴게소 담기
+        - 목적지를 선택하면, 해당 경로의 휴게소만 보이기..?
+
+            - 첫 페이지에 출발, 목적지 고르면 그 면을 보여주기
