@@ -23,8 +23,8 @@ Learning pyscript and writing books
         - matplotlib
         - pandas
         - sklearn (보류) or 데이터를 읽어와서 사용
--week_5
-    - [미니프로젝트]()
+- week_5
+    - [미니프로젝트](https://github.com/AMinSC/pyscript/blob/main/study/week_5.md)
     - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소 Status)
         - 김천(서울 방향) 음식명 글자 깨짐
         - 핀 묶음(클러스터)
