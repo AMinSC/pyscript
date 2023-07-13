@@ -26,8 +26,6 @@
             zoom_start = 8
         )
 
-        tooltip = 'Click!!'
-
         o = pd.read_csv('rest-area3.csv', encoding='CP949')
 
         쉼터유 = folium.FeatureGroup(name='쉼터유').add_to(m)
@@ -42,7 +40,7 @@
                                 세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
                                 휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
                                 쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
-                    tooltip = tooltip
+                    tooltip = o.iloc[i]["휴게소명"]
                 ).add_to(쉼터유)
             else:
                 folium.Marker(
@@ -52,7 +50,7 @@
                                 세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
                                 휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
                                 쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
-                    tooltip = tooltip
+                    tooltip = o.iloc[i]["휴게소명"]
                 ).add_to(쉼터무)
 
         folium.LayerControl(collapsed=False).add_to(m)
