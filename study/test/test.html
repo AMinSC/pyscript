@@ -32,37 +32,33 @@
 
         m = folium.Map(
             location = [36.4989, 127.9606],
-            zoom_start = 8
+            zoom_start = 8,
+            min_zoom = 7
         )
 
         o = pd.read_csv('rest-area3.csv', encoding='CP949')
 
-        쉼터유 = folium.FeatureGroup(name='쉼터유').add_to(m)
-        쉼터무 = folium.FeatureGroup(name='쉼터무').add_to(m)
+        line = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
 
+        line_dict = {}
+        for l in line:
+            line_dict[l] = folium.FeatureGroup(name=l).add_to(m)
+        
         for i in range(o.shape[0]):
-            if o.iloc[i]["쉼터유무"] == 'Y':
-                folium.Marker(
-                    [o.iloc[i]['위도'], o.iloc[i]['경도']],
-                    popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
-                                전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong><br>\
-                                세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
-                                휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
-                                쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
-                    tooltip = o.iloc[i]["휴게소명"]
-                ).add_to(쉼터유)
-            else:
-                folium.Marker(
-                    [o.iloc[i]['위도'], o.iloc[i]['경도']],
-                    popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
-                                전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong><br>\
-                                세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
-                                휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
-                                쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
-                    tooltip = o.iloc[i]["휴게소명"]
-                ).add_to(쉼터무)
-
-        folium.LayerControl(collapsed=False).add_to(m)
+            for k, v in line_dict.items():
+                if o.iloc[i]["도로노선명"] == k:
+                    folium.Marker(
+                        [o.iloc[i]['위도'], o.iloc[i]['경도']],
+                        popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
+                                    전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong><br>\
+                                    세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
+                                    휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
+                                    쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
+                        tooltip = o.iloc[i]["휴게소명"]
+                    ).add_to(v)
+                    continue
+            
+        folium.LayerControl().add_to(m)
 
         display(m, target='map')
     </py-script>
