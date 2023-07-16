@@ -26,11 +26,6 @@ Learning pyscript and writing books
 - week_5
     - [미니프로젝트](https://github.com/AMinSC/pyscript/blob/main/study/week_5.md)
     - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소 Status)
-        - 김천(서울 방향) 음식명 글자 깨짐
-        - 핀 묶음(클러스터)
-        - 옵션이나 필터
-        - 경로 별 필터 검색 기능?
-        - 장바구니 처럼 목적지에 필요한 휴게소 담기
-        - 목적지를 선택하면, 해당 경로의 휴게소만 보이기..?
-
-            - 첫 페이지에 출발, 목적지 고르면 그 면을 보여주기
+        - 완료 : 도로노선명 별 카테고리 설정
+        - 예정 : 핀 묶음(클러스터)
+        - 예정 : 휴게소 검색 시 대표 메뉴 제공(자동완성..?)
