@@ -15,6 +15,15 @@
         from = "./data/"
         files = ["rest-area1.csv", "rest-area2.csv", "rest-area3.csv"]
     </py-config>
+    <main>
+        <div class="place">
+            <div class="text feel">휴게소 이름</div>
+            <input id="target" type="text" autofocus placeholder="예 &#41; 기흥(부산 방향), 원주(춘천 방향)" />
+            <button type="submit">검색</button>
+        </div>
+
+    </main>
+
     <py-script>
         import numpy as np
         import pandas as pd
