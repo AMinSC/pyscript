@@ -7,6 +7,74 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <title>휴게소</title>
+    <style>
+        /* 현재 선택된 검색어 */
+        .autocomplete > div.active {
+        background: #e0e5f6;
+        color: #000;
+        }
+
+        /* -------------------------- */
+
+        .autocomplete > div {
+        background: #f1f3f499;
+        padding: .2rem .6rem;
+        }
+
+        section {
+        width: 500px;
+        padding: 1.5rem 1.6rem;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, .05);  
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #fff;
+        margin-top: 2rem;
+        }
+
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        word-break: break-all;
+        font-family: Pretendard;
+        }
+
+        input {
+        width: 100%;
+        height: 3rem;
+        border-radius: 5px;
+        padding: 0 1rem;
+        border: 1px solid #e0e5f6;
+        background: #fff;
+        margin: 1rem 0;
+        }
+
+        input::placeholder {
+        font-size: 1rem;
+        }
+
+        body {
+        background: #f7f8fc;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        }
+
+        mark {
+        background: #febf0090;
+        }
+
+        p {
+        opacity: .8;
+        font-size: 15px;
+        }
+    </style>
+    
 </head>
 <body>
     <py-config>
@@ -16,18 +84,42 @@
         files = ["rest-area1.csv", "rest-area2.csv", "rest-area3.csv"]
     </py-config>
     <main>
+        <section>
+            <h2>검색 자동완성</h2>
+            <p>(검색어 - "경부선", "서해안선", "호남선" 등)</p>
+            <!-- 검색어 입력창   -->
+            <input
+                type="text"
+                id="search"
+                placeholder="검색어를 입력해주세요."
+                autocomplete="off"
+            />
+            <!-- 자동완성 단어 리스트 -->
+            <div class="autocomplete"></div>
+        </section>
+
         <div class="place">
             <div class="text feel">휴게소 이름</div>
             <input id="target" type="text" autofocus placeholder="예 &#41; 기흥(부산 방향), 원주(춘천 방향)" />
-            <button type="submit">검색</button>
+            <button id="stations" py-click="trigger()">검색</button>
         </div>
-
+        <div id="menu"></div>
     </main>
 
     <py-script>
         import numpy as np
         import pandas as pd
         import folium
+
+        from js import console, document
+        from pyodide.ffi.wrappers import add_event_listener
+
+
+        def hello_args(args):
+            display(f"{args}의 대표 음식 : {o[o['휴게소명'] == args]['휴게소대표음식명'].values[0]}", target='menu')
+
+        def trigger():
+            hello_args(document.getElementById("target").value)
 
 
         m = folium.Map(
@@ -64,5 +156,69 @@
     </py-script>
     <div id="map"></div>
     <py-repl auto-generate="true"></py-repl>
+
+    <script>
+        // const dataList = ["빨간색", "파란색", "노란색", "검정색"];
+        const dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선'];
+
+        const $search = document.querySelector("#search");
+        const $autoComplete = document.querySelector(".autocomplete");
+
+        let nowIndex = 0;
+
+        $search.onkeyup = (event) => {
+            // 검색어
+            const value = $search.value.trim();
+
+            // 자동완성 필터링
+            const matchDataList = value
+                ? dataList.filter((label) => label.includes(value))
+                : [];
+
+            switch (event.keyCode) {
+                // UP KEY
+                case 38:
+                nowIndex = Math.max(nowIndex - 1, 0);
+                break;
+
+                // DOWN KEY
+                case 40:
+                nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
+                break;
+
+                // ENTER KEY
+                case 13:
+                document.querySelector("#search").value = matchDataList[nowIndex] || "";
+
+                // 초기화
+                nowIndex = 0;
+                matchDataList.length = 0;
+                break;
+                
+                // 그외 다시 초기화
+                default:
+                nowIndex = 0;
+                break;
+            }
+
+            // 리스트 보여주기
+            showList(matchDataList, value, nowIndex);
+        };
+
+        const showList = (data, value, nowIndex) => {
+            // 정규식으로 변환
+            const regex = new RegExp(`(${value})`, "g");
+            
+            $autoComplete.innerHTML = data
+                .map(
+                (label, index) => `
+                <div class='${nowIndex === index ? "active" : ""}'>
+                    ${label.replace(regex, "<mark>$1</mark>")}
+                </div>
+                `
+                )
+            .join("");
+        };
+    </script>
 </body>
 </html>

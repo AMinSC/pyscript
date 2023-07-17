@@ -27,5 +27,5 @@ Learning pyscript and writing books
     - [미니프로젝트](https://github.com/AMinSC/pyscript/blob/main/study/week_5.md)
     - *가안* : Folium, geopandas + PyScript + 공공데이터(휴게소 Status)
         - 완료 : 도로노선명 별 카테고리 설정
-        - 예정 : 핀 묶음(클러스터)
         - 예정 : 휴게소 검색 시 대표 메뉴 제공(자동완성..?)
+        - 예정 : 홈페이지 꾸며주기
