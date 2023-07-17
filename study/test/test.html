@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <title>휴게소</title>
     <style>
         /* 현재 선택된 검색어 */
@@ -73,6 +74,29 @@
         opacity: .8;
         font-size: 15px;
         }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */                          
+        }
     </style>
     
 </head>
@@ -105,6 +129,19 @@
         </div>
         <div id="menu"></div>
     </main>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
+            <p style="text-align: center; line-height: 1.5;"><br />여기에 내용</p>
+            <p><br /></p>
+            <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+                <span class="pop_bt" style="font-size: 13pt;" >
+                    닫기
+                </span>
+            </div>
+        </div>
+    </div>
 
     <py-script>
         import numpy as np
@@ -158,67 +195,77 @@
     <py-repl auto-generate="true"></py-repl>
 
     <script>
-        // const dataList = ["빨간색", "파란색", "노란색", "검정색"];
-        const dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선'];
+        jQuery(document).ready(function() {
+            $('#myModal').show();
+        });
+        //팝업 Close 기능
+        function close_pop(flag) {
+            const dataList = pyscript.interpreter.globals.get('line')
+            const $search = document.querySelector("#search");
+            const $autoComplete = document.querySelector(".autocomplete");
 
-        const $search = document.querySelector("#search");
-        const $autoComplete = document.querySelector(".autocomplete");
+            let nowIndex = 0;
 
-        let nowIndex = 0;
+            $search.onkeyup = (event) => {
+                // 검색어
+                const value = $search.value.trim();
 
-        $search.onkeyup = (event) => {
-            // 검색어
-            const value = $search.value.trim();
+                // 자동완성 필터링
+                const matchDataList = value
+                    ? dataList.filter((label) => label.includes(value))
+                    : [];
 
-            // 자동완성 필터링
-            const matchDataList = value
-                ? dataList.filter((label) => label.includes(value))
-                : [];
+                switch (event.keyCode) {
+                    // UP KEY
+                    case 38:
+                    nowIndex = Math.max(nowIndex - 1, 0);
+                    break;
 
-            switch (event.keyCode) {
-                // UP KEY
-                case 38:
-                nowIndex = Math.max(nowIndex - 1, 0);
-                break;
+                    // DOWN KEY
+                    case 40:
+                    nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
+                    break;
 
-                // DOWN KEY
-                case 40:
-                nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
-                break;
+                    // ENTER KEY
+                    case 13:
+                    document.querySelector("#search").value = matchDataList[nowIndex] || "";
 
-                // ENTER KEY
-                case 13:
-                document.querySelector("#search").value = matchDataList[nowIndex] || "";
+                    // 초기화
+                    nowIndex = 0;
+                    matchDataList.length = 0;
+                    break;
+                    
+                    // 그외 다시 초기화
+                    default:
+                    nowIndex = 0;
+                    break;
+                }
 
-                // 초기화
-                nowIndex = 0;
-                matchDataList.length = 0;
-                break;
+                // 리스트 보여주기
+                showList(matchDataList, value, nowIndex);
+            };
+
+            const showList = (data, value, nowIndex) => {
+                // 정규식으로 변환
+                const regex = new RegExp(`(${value})`, "g");
                 
-                // 그외 다시 초기화
-                default:
-                nowIndex = 0;
-                break;
-            }
-
-            // 리스트 보여주기
-            showList(matchDataList, value, nowIndex);
+                $autoComplete.innerHTML = data
+                    .map(
+                    (label, index) => `
+                    <div class='${nowIndex === index ? "active" : ""}'>
+                        ${label.replace(regex, "<mark>$1</mark>")}
+                    </div>
+                    `
+                    )
+                .join("");
+            };
+            $('#myModal').hide();
         };
 
-        const showList = (data, value, nowIndex) => {
-            // 정규식으로 변환
-            const regex = new RegExp(`(${value})`, "g");
-            
-            $autoComplete.innerHTML = data
-                .map(
-                (label, index) => `
-                <div class='${nowIndex === index ? "active" : ""}'>
-                    ${label.replace(regex, "<mark>$1</mark>")}
-                </div>
-                `
-                )
-            .join("");
-        };
+
+        // const dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선'];
+
+        
     </script>
 </body>
 </html>
