@@ -151,6 +151,60 @@
         from js import console, document
         from pyodide.ffi.wrappers import add_event_listener
 
+        import js
+        import re
+
+        dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
+
+        search = js.document.querySelector("#search")
+        autoComplete = js.document.querySelector(".autocomplete")
+
+
+        def showList(data, value, nowIndex):
+            p = re.compile(f'([{value}])')
+            result = ""
+
+            for i, v in enumerate(data):
+                #print(i,v)
+                result += '<div class="'
+                result += 'active">' if nowIndex == i else '">'
+                result += p.sub(r'<mark>\1</mark>', v) + '</div>'
+            
+            autoComplete.innerHTML = result
+
+            #print(result)
+
+
+        def keyupEvent(event):
+            value = search.value.strip()
+            if value:
+                matchDataList = list(filter(lambda x: x.find(value) >= 0, dataList))
+                nowIndex = 0
+                keyCode = event.keyCode
+                #print(matchDataList)
+
+                def setValue(value):
+                    search.value = value
+                    nowIndex = 0
+                    matchDataList = []
+                
+                def indexChange(value):
+                    nowIndex = value
+
+                if keyCode == 38:
+                    indexChange(max(nowIndex-1, 0))
+                elif keyCode == 40:
+                    indexChange(min(nowIndex+1, len(matchDataList)-1))
+                elif keyCode == 13:
+                    setValue(matchDataList[nowIndex])
+                else:
+                    nowIndex = 0
+
+                #print(nowIndex)
+                showList(matchDataList, value, nowIndex)
+
+        search.onkeyup = keyupEvent
+
 
         def hello_args(args):
             display(f"{args}의 대표 음식 : {o[o['휴게소명'] == args]['휴게소대표음식명'].values[0]}", target='menu')
@@ -195,77 +249,24 @@
     <py-repl auto-generate="true"></py-repl>
 
     <script>
-        jQuery(document).ready(function() {
-            $('#myModal').show();
-        });
-        //팝업 Close 기능
-        function close_pop(flag) {
-            const dataList = pyscript.interpreter.globals.get('line')
-            const $search = document.querySelector("#search");
-            const $autoComplete = document.querySelector(".autocomplete");
-
-            let nowIndex = 0;
-
-            $search.onkeyup = (event) => {
-                // 검색어
-                const value = $search.value.trim();
-
-                // 자동완성 필터링
-                const matchDataList = value
-                    ? dataList.filter((label) => label.includes(value))
-                    : [];
-
-                switch (event.keyCode) {
-                    // UP KEY
-                    case 38:
-                    nowIndex = Math.max(nowIndex - 1, 0);
-                    break;
-
-                    // DOWN KEY
-                    case 40:
-                    nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
-                    break;
-
-                    // ENTER KEY
-                    case 13:
-                    document.querySelector("#search").value = matchDataList[nowIndex] || "";
-
-                    // 초기화
-                    nowIndex = 0;
-                    matchDataList.length = 0;
-                    break;
-                    
-                    // 그외 다시 초기화
-                    default:
-                    nowIndex = 0;
-                    break;
-                }
-
-                // 리스트 보여주기
-                showList(matchDataList, value, nowIndex);
-            };
-
-            const showList = (data, value, nowIndex) => {
-                // 정규식으로 변환
-                const regex = new RegExp(`(${value})`, "g");
-                
-                $autoComplete.innerHTML = data
-                    .map(
-                    (label, index) => `
-                    <div class='${nowIndex === index ? "active" : ""}'>
-                        ${label.replace(regex, "<mark>$1</mark>")}
-                    </div>
-                    `
-                    )
-                .join("");
-            };
-            $('#myModal').hide();
+        const showList = (data, value, nowIndex) => {
+            // 정규식으로 변환
+            const regex = new RegExp(`(${value})`, "g");
+            
+            $autoComplete.innerHTML = data
+                .map(
+                (label, index) => `
+                <div class='${nowIndex === index ? "active" : ""}'>
+                    ${label.replace(regex, "<mark>$1</mark>")}
+                </div>
+                `
+                )
+            .join("");
         };
+        $('#myModal').hide();
 
 
         // const dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선'];
-
-        
     </script>
 </body>
 </html>
