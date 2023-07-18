@@ -110,23 +110,22 @@
     <main>
         <section>
             <h2>검색 자동완성</h2>
-            <p>(검색어 - "경부선", "서해안선", "호남선" 등)</p>
-            <!-- 검색어 입력창   -->
+            <p>(휴게소명을 적어주세요)</p>
             <input
                 type="text"
                 id="search"
                 placeholder="검색어를 입력해주세요."
                 autocomplete="off"
             />
-            <!-- 자동완성 단어 리스트 -->
             <div class="autocomplete"></div>
         </section>
+        <button id="stations" py-click="trigger()">검색</button>
 
-        <div class="place">
+        <!-- <div class="place">
             <div class="text feel">휴게소 이름</div>
             <input id="target" type="text" autofocus placeholder="예 &#41; 기흥(부산 방향), 원주(춘천 방향)" />
             <button id="stations" py-click="trigger()">검색</button>
-        </div>
+        </div> -->
         <div id="menu"></div>
     </main>
 
@@ -154,7 +153,12 @@
         import js
         import re
 
-        dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
+
+        o = pd.read_csv('rest-area3.csv', encoding='CP949')
+
+        dataList = []
+        for i in o['휴게소명']:
+            dataList.append(i)
 
         search = js.document.querySelector("#search")
         autoComplete = js.document.querySelector(".autocomplete")
@@ -172,7 +176,7 @@
             
             autoComplete.innerHTML = result
 
-            #print(result)
+            # print(result)
 
 
         def keyupEvent(event):
@@ -210,7 +214,7 @@
             display(f"{args}의 대표 음식 : {o[o['휴게소명'] == args]['휴게소대표음식명'].values[0]}", target='menu')
 
         def trigger():
-            hello_args(document.getElementById("target").value)
+            hello_args(document.getElementById("search").value)
 
 
         m = folium.Map(
@@ -218,8 +222,6 @@
             zoom_start = 8,
             min_zoom = 7
         )
-
-        o = pd.read_csv('rest-area3.csv', encoding='CP949')
 
         line = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
 
@@ -264,9 +266,6 @@
             .join("");
         };
         $('#myModal').hide();
-
-
-        // const dataList = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선'];
     </script>
 </body>
 </html>
