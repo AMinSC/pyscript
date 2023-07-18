@@ -2,8 +2,11 @@
 - DataFrame
     ![rest-area-df](../asset/rest-area-df.png)
 
-- output
+- 1차 : 전국 휴게소 핀설정, 클릭 시 휴게소 옵션확인
     ![rest-area](../asset/rest-area.png)
+
+- 2차 : 1차 기능 + 검색 자동완성, 검색 시 휴게소 대표음식 제공
+    ![rest-area](../asset/rest-area2.png)
 
 
 출처 - inflearn : 공공데이터와 Folium(Python Library)으로 만드는 제주 오름 지도 안내 서비스
