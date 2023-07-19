@@ -8,6 +8,37 @@
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
     <title>휴게소</title>
+    <style>
+        main {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #left-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 40%;
+        }
+
+        #left-side > div {
+            margin-top: 20px;
+        }
+
+        #map {
+            width: 50%;
+        }
+
+
+        .autocomplete > div.active {
+        background: #e0e5f6;
+        color: #000;
+        }
+        .autocomplete > div {
+        background: #f1f3f499;
+        padding: .2rem .6rem;
+        }
+    </style>
 </head>
 <body>
     <py-config>
@@ -16,20 +47,26 @@
         from = "./data/"
         files = ["rest-area3.csv", "autoComplate.py"]
     </py-config>
+    
     <main>
-        <section>
-            <h2>검색 자동완성</h2>
-            <p>(휴게소명을 적어주세요)</p>
-            <input
-                type="text"
-                id="search"
-                placeholder="검색어를 입력해주세요."
-                autocomplete="off"
-            />
-            <div class="autocomplete"></div>
-        </section>
-        <button id="stations" py-click="trigger()">검색</button>
-        <div id="menu"></div>
+        <div id="left-side">
+            <section>
+                <h2>휴게소 대표음식</h2>
+                <p>(휴게소명을 적어주세요)</p>
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="동해, 안성 등등"
+                    autocomplete="off"
+                />
+                <div class="autocomplete"></div>
+            </section>
+            <div>
+                <button id="stations" py-click="trigger()">검색</button>
+                <div id="menu"></div>
+            </div>
+        </div>
+        <div id="map"></div>
     </main>
 
     <py-script>
@@ -133,6 +170,5 @@
 
         display(m, target='map')
     </py-script>
-    <div id="map"></div>
 </body>
 </html>
