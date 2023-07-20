@@ -79,10 +79,10 @@
 </head>
 <body>
     <py-config>
-        packages = ["folium", "pandas", "numpy"]
+        packages = ["folium", "pandas"]
         [[fetch]]
         from = "./data/"
-        files = ["rest-area1.csv", "rest-area2.csv", "rest-area3.csv"]
+        files = ["rest-area3.csv"]
     </py-config>
     <main>
         <section>
@@ -102,9 +102,8 @@
     </main>
 
     <py-script>
-        import numpy as np
-        import pandas as pd
-        import folium
+        import pandas as pd  # DataFrame을 위한 라이브러리
+        import folium  # 지도를 위한 라이브러리
 
         from js import console, document
         from pyodide.ffi.wrappers import add_event_listener
@@ -115,6 +114,7 @@
 
         o = pd.read_csv('rest-area3.csv', encoding='CP949')
 
+        # 검색 가이드를 위한 전국 휴게소명 리스트에 넣어주기
         dataList = []
         for i in o['휴게소명']:
             dataList.append(i)
@@ -164,28 +164,34 @@
         search.onkeyup = keyupEvent
 
 
+        # 검색창에 작성한 휴게소명과 휴게소 데이터의 휴게소명이 맞는 대표음식 반환해주기
         def hello_args(args):
             display(f"{args}의 대표 음식 : {o[o['휴게소명'] == args]['휴게소대표음식명'].values[0]}", target='menu')
 
+        # 검색했을 때 hello_args함수가 작동되는 트리거 함수
         def trigger():
             hello_args(document.getElementById("search").value)
 
-
+        # folium라이브러리를 활용하여 지도 설정(지표(위도,경도), 확대 옵션)
         m = folium.Map(
             location = [36.4989, 127.9606],
             zoom_start = 8,
             min_zoom = 7
         )
 
+        # 고속도로 라인(선)마다 그룹지어주기 위한 리스트
         line = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
 
+        # 위에서 작성한 리스트 기준으로 folium메서드를 활용하여 그룹지어주기
         line_dict = {}
         for l in line:
             line_dict[l] = folium.FeatureGroup(name=l).add_to(m)
         
+        # 설정한(대한민국) 지도에 휴게소별로 핀 설정해주기
         for i in range(o.shape[0]):
             for k, v in line_dict.items():
                 if o.iloc[i]["도로노선명"] == k:
+                    # 핀을 클릭할 경우, 상세 페이지(휴게소명, 전기차충전소유무, 세차장, 휴게소대표음식명, 쉼터유무)
                     folium.Marker(
                         [o.iloc[i]['위도'], o.iloc[i]['경도']],
                         popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
@@ -193,13 +199,25 @@
                                     세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
                                     휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
                                     쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
+                        # 핀에 마우스를 올릴경우, 휴게소명이 나오게 하기
                         tooltip = o.iloc[i]["휴게소명"]
                     ).add_to(v)
                     continue
-            
+        # 고속도로 라인(선)마다 지어진 그룹을 옵션처러 끄고 키기
         folium.LayerControl().add_to(m)
 
+        # display메서드로 최종 지도 출력해주기
         display(m, target='map')
     </py-script>
+
+    <script>
+        // 검색란에서 엔터키를 쳤을 대 눌렀을 때, 밑에 검색버튼이 되도록 하는 기능
+        search.addEventListener("keydown", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("stations").click();
+            }
+        });
+    </script>
 </body>
 </html>
