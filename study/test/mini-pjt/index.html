@@ -5,170 +5,150 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <link rel="stylesheet" href="./css/style.css">
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
     <title>휴게소</title>
-    <style>
-        main {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #left-side {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 40%;
-        }
-
-        #left-side > div {
-            margin-top: 20px;
-        }
-
-        #map {
-            width: 50%;
-        }
-
-
-        .autocomplete > div.active {
-        background: #e0e5f6;
-        color: #000;
-        }
-        .autocomplete > div {
-        background: #f1f3f499;
-        padding: .2rem .6rem;
-        }
-    </style>
+   
 </head>
 <body>
     <py-config>
         packages = ["folium", "pandas", "numpy"]
         [[fetch]]
         from = "./data/"
-        files = ["rest-area3.csv", "autoComplate.py"]
+        files = ["rest-area3.csv"]
     </py-config>
-    
-    <main>
-        <div id="left-side">
-            <section>
-                <h2>휴게소 대표음식</h2>
-                <p>(휴게소명을 적어주세요)</p>
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="동해, 안성 등등"
-                    autocomplete="off"
-                />
-                <div class="autocomplete"></div>
-            </section>
-            <div>
-                <button id="stations" py-click="trigger()">검색</button>
-                <div id="menu"></div>
-            </div>
-        </div>
-        <div id="map"></div>
+    <main style="display: flex; flex-direction: column; align-items: center; width: 80%; margin: 0 auto;">
+        <section style="margin-bottom: 1rem;">
+            <h2>전국 휴게소 대표메뉴찾기</h2>
+            <p>(휴게소명을 적어주세요)</p>
+            <input type="text" id="search" placeholder="휴게소 이름 입력" autocomplete="off"/>
+            <div class="autocomplete"></div>
+            <button id="stations" py-click="trigger()" style="margin-bottom: 1rem;">검색</button>
+        </section>
+        <div id="menu"></div>
     </main>
 
     <py-script>
-        from js import console, document
-        import numpy as np
-        import pandas as pd
-        import folium
-        import re
+    import pandas as pd  # DataFrame을 위한 라이브러리
+    import folium  # 지도를 위한 라이브러리
+    import json
 
-        from autoComplate import showList
+    from js import console, document
+    from pyodide.ffi.wrappers import add_event_listener
+    from js import eval as js_eval
+
+    import js
+    import re
+
+    o = pd.read_csv('rest-area3.csv', encoding='CP949')
+
+            # 검색 가이드를 위한 전국 휴게소명 리스트에 넣어주기
+    dataList = []
+    for i in o['휴게소명']:
+        dataList.append(i)
+
+    search = js.document.querySelector("#search")
+    autoComplete = js.document.querySelector(".autocomplete")
+    nowIndex = 0
 
 
-        o = pd.read_csv('rest-area3.csv', encoding='CP949')
+    def showList(data, value, nowIndex):
+        p = re.compile(f'([{value}])')
+        result = ""
 
-        dataList = []
-        for i in o['휴게소명']:
-            dataList.append(i)
+        for i, v in enumerate(data):
+            result += '<div class="'
+            result += 'active">' if nowIndex == i else '">'
+            result += p.sub(r'<mark>\1</mark>', v) + '</div>'
         
+        autoComplete.innerHTML = result
 
-        search = js.document.querySelector("#search")
-        autoComplete = js.document.querySelector(".autocomplete")
-
-
-        def showList(data, value, nowIndex):
-            p = re.compile(f'([{value}])')
-            result = ""
-        
-            for i, v in enumerate(data):
-                #print(i,v)
-                result += '<div class="'
-                result += 'active">' if nowIndex == i else '">'
-                result += p.sub(r'<mark>\1</mark>', v) + '</div>'
-            
-            autoComplete.innerHTML = result
+    def clearAutoComplete():
+        autoComplete.innerHTML = ''
 
 
-        def keyupEvent(event):
-            value = search.value.strip()
-            if value:
-                matchDataList = list(filter(lambda x: x.find(value) >= 0, dataList))
+    def keyupEvent(event):
+        global nowIndex
+        value = search.value.strip()
+        if value:
+            matchDataList = list(filter(lambda x: x.find(value) >= 0, dataList))
+            keyCode = event.keyCode
+
+            if keyCode == 38:
+                nowIndex = max(nowIndex-1, 0)
+            elif keyCode == 40:
+                nowIndex = min(nowIndex+1, len(matchDataList)-1)
+            elif keyCode == 13:
+                search.value = matchDataList[nowIndex]
                 nowIndex = 0
-                keyCode = event.keyCode
+                matchDataList = []
+            else:
+                nowIndex = 0
 
-                def setValue(value):
-                    search.value = value
-                    nowIndex = 0
-                    matchDataList = []
-                
-                def indexChange(value):
-                    nowIndex = value
+            showList(matchDataList, value, nowIndex)
 
-                if keyCode == 38:
-                    indexChange(max(nowIndex-1, 0))
-                elif keyCode == 40:
-                    indexChange(min(nowIndex+1, len(matchDataList)-1))
-                elif keyCode == 13:
-                    setValue(matchDataList[nowIndex])
-                else:
-                    nowIndex = 0
+        else:
+            clearAutoComplete()
 
-                showList(matchDataList, value, nowIndex)
+    search.onkeyup = keyupEvent
 
 
-        search.onkeyup = keyupEvent
+            # 검색창에 작성한 휴게소명과 휴게소 데이터의 휴게소명이 맞는 대표음식 반환해주기
+    def hello_args(args):
+        result = o[o['휴게소명'] == args]['휴게소대표음식명'].values
+        # 결과를 표시할 div의 내용을 비운다.
+        menu_div = document.getElementById('menu')
+        menu_div.innerHTML = ''
+        if result.size != 0:
+            display(f"{args}의 대표 음식 : {result[0]}", target='menu')
+        else:
+            display("정확한 휴게소명을 입력해주세요", target='menu')
 
+            # 검색했을 때 hello_args함수가 작동되는 트리거 함수
+    def trigger():
+        search_value = document.getElementById("search").value.strip()
+        if search_value:
+            hello_args(search_value)
+        else:
+            display("정확한 휴게소명을 입력해주세요", target='menu')
 
-        def hello_args(args):
-            display(f"{args}의 대표 음식 : {o[o['휴게소명'] == args]['휴게소대표음식명'].values[0]}", target='menu')
+            # folium라이브러리를 활용하여 지도 설정(지표(위도,경도), 확대 옵션)
+    m = folium.Map(
+        location = [36.4989, 127.9606],
+        zoom_start = 7,
+        min_zoom = 7
+    )
 
-        def trigger():
-            hello_args(js.document.getElementById("search").value)
+            # 고속도로 라인(선)마다 그룹지어주기 위한 리스트
+    line = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
 
+            # 위에서 작성한 리스트 기준으로 folium메서드를 활용하여 그룹지어주기
+    line_dict = {}
+    for l in line:
+        line_dict[l] = folium.FeatureGroup(name=l).add_to(m)
+    
+            # 설정한(대한민국) 지도에 휴게소별로 핀 설정해주기
+    for i in range(o.shape[0]):
+        for k, v in line_dict.items():
+            if o.iloc[i]["도로노선명"] == k:
+                folium.Marker(
+                    [o.iloc[i]['위도'], o.iloc[i]['경도']],
+                    popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
+                                전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong><br>\
+                                세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
+                                휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
+                                쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
+                    tooltip = o.iloc[i]["휴게소명"]
+                ).add_to(v)
+                continue
+    # 고속도로 라인(선)마다 지어진 그룹을 옵션처러 끄고 키기
+    folium.LayerControl().add_to(m)
 
-        m = folium.Map(
-            location = [36.4989, 127.9606],
-            zoom_start = 8,
-            min_zoom = 7
-        )
+            # display메서드로 최종 지도 출력해주기
+    display(m, target='map')
+	</py-script>
 
-        line = ['경부선', '서해안선', '호남선', '중부내륙선', '중앙선', '영동선', '남해선', '대전통영선', '평택제천선', '광주대구선', '당진영덕선', '중부선', '순천완주선', '상주영덕선', '중부내륙지선', '대구포항선', '동해선', '중부내륙', '서천공주선', '호남지선', '무안광주선', '울산포항선', '익산장수선', '서울양양선', '밀양울산선', '부산외곽선', '호남고속도로', '수도권제1순환선']
-
-        line_dict = {}
-        for l in line:
-            line_dict[l] = folium.FeatureGroup(name=l).add_to(m)
-        
-        for i in range(o.shape[0]):
-            for k, v in line_dict.items():
-                if o.iloc[i]["도로노선명"] == k:
-                    folium.Marker(
-                        [o.iloc[i]['위도'], o.iloc[i]['경도']],
-                        popup = f'<div style="width: 120px;"><strong>{o.iloc[i]["휴게소명"]}</strong><br>\
-                                    전기차충전소유무 : <strong>{o.iloc[i]["전기차충전소유무"]}</strong><br>\
-                                    세차장 : <strong>{o.iloc[i]["세차장"]}</strong><br>\
-                                    휴게소대표음식명 : <strong>{o.iloc[i]["휴게소대표음식명"]}</strong><br>\
-                                    쉼터유무 : <strong>{o.iloc[i]["쉼터유무"]}</strong></div>',
-                        tooltip = o.iloc[i]["휴게소명"]
-                    ).add_to(v)
-                    continue
-            
-        folium.LayerControl().add_to(m)
-
-        display(m, target='map')
-    </py-script>
+    <div id="map" style="width: 60%; margin: 0 auto;"></div>
 </body>
 </html>
