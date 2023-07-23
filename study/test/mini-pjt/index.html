@@ -70,6 +70,7 @@
 
         def keyupEvent(event):
             global nowIndex
+            global previous_key  # 이전키 확인
             value = search.value.strip()
             if value:
                 matchDataList = list(filter(lambda x: x.find(value) >= 0, dataList))
@@ -80,9 +81,13 @@
                 elif keyCode == 40:
                     nowIndex = min(nowIndex+1, len(matchDataList)-1)
                 elif keyCode == 13:
-                    search.value = matchDataList[nowIndex]
-                    nowIndex = 0
-                    matchDataList = []
+                    # 이전에 휴게소를 골랐을 경우, 엔터키를 누르면 자동 검색
+                    if previous_key == 13:
+                        trigger()
+                    else:
+                        search.value = matchDataList[nowIndex]
+                        nowIndex = 0
+                        matchDataList = []
                 else:
                     nowIndex = 0
 
@@ -90,6 +95,9 @@
 
             else:
                 clearAutoComplete()
+
+            # 키 등록
+            previous_key = keyCode
 
         search.onkeyup = keyupEvent
 
