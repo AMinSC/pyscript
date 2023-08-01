@@ -1,6 +1,12 @@
 # pyscript
 Learning pyscript and writing books
 
+## Book Launch
+
+![책출판](image.png)
+
+[바로가기](https://ridibooks.com/books/2773000076?_s=search&_q=%ED%8C%8C%EC%9D%B4%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8&_rdt_sid=search&_rdt_idx=0)
+
 ## study
 - week_1
     - [Using the fetch from py-config](https://github.com/AMinSC/pyscript/blob/main/study/week_1.md)
