@@ -35,3 +35,6 @@ Learning pyscript and writing books
         - 완료 : 도로노선명 별 카테고리 설정
         - 예정 : 휴게소 검색 시 대표 메뉴 제공(자동완성..?)
         - 예정 : 홈페이지 꾸며주기
+
+## Organization
+[미니프로젝트](https://github.com/orgs/Pyscript-PJT/repositories)
